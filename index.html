@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asia Electric Company | Instalații Electrice Brașov</title>
+  <meta name="description" content="Instalații electrice profesionale în Brașov. Autorizați ANRE. Rezidențial, comercial, industrial. Sună: 0758 818 051">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --black: #050507;
+      --dark: #0d0d14;
+      --card: #111118;
+      --border: rgba(255,255,255,0.07);
+      --white: #ffffff;
+      --off-white: #e8e8f0;
+      --muted: #8888a0;
+      --yellow: #f5c518;
+      --yellow-dim: rgba(245,197,24,0.12);
+      --blue: #2563eb;
+      --blue-glow: rgba(37,99,235,0.2);
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* ── LOADER ─────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0;
+      background: var(--black);
+      z-index: 10000;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+    }
+    .loader-logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -0.02em; }
+    .loader-logo .word { display: flex; }
+    .loader-logo .space { width: 0.35em; }
+    .loader-logo span { opacity: 0; transform: translateY(30px); display: inline-block; }
+    .loader-logo .asia-letters span { color: var(--white); }
+    .loader-logo .electric-letters span { color: var(--yellow); }
+    .loader-line { width: 0; height: 2px; background: linear-gradient(90deg, var(--yellow), var(--blue)); margin-top: 1.2rem; border-radius: 2px; }
+    .loader-sub { opacity: 0; margin-top: 1rem; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 5%;
+      transition: background var(--transition), padding var(--transition), box-shadow var(--transition);
+    }
+    nav.scrolled { background: rgba(5,5,7,0.95); backdrop-filter: blur(20px); padding: 1rem 5%; box-shadow: 0 1px 0 var(--border); }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; }
+    .nav-logo span { color: var(--yellow); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color var(--transition); }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta { background: var(--yellow); color: var(--black); padding: 0.6rem 1.5rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: transform var(--transition), box-shadow var(--transition); }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,197,24,0.35); }
+    @media(max-width:768px){.nav-links{display:none;}.nav-cta{display:none;}}
+
+    /* ── HERO ────────────────────────────────────── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding: 8rem 5% 5rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(245,197,24,0.06) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 80% at 80% 20%, rgba(37,99,235,0.08) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    }
+    .hero-content { position: relative; text-align: center; max-width: 900px; margin: 0 auto; }
+    #hero-badge { opacity: 0; transform: translateY(20px); display: inline-flex; align-items: center; gap: 0.5rem; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.25); border-radius: 50px; padding: 0.4rem 1rem; font-size: 0.8rem; color: var(--yellow); font-weight: 600; margin-bottom: 2rem; letter-spacing: 0.05em; }
+    #hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--yellow); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+    .hero-line-wrap { overflow: hidden; }
+    .hero-line-inner { transform: translateY(100%); }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.8rem, 8vw, 6.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 0.15em; }
+    h1 .accent { color: var(--yellow); }
+    #hero-sub { opacity: 0; transform: translateY(20px); font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted); max-width: 580px; margin: 1.8rem auto 0; line-height: 1.7; }
+    #hero-actions { opacity: 0; transform: translateY(20px); display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--yellow); color: var(--black); padding: 0.9rem 2rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: transform var(--transition), box-shadow var(--transition); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(245,197,24,0.4); }
+    .btn-secondary { background: transparent; color: var(--white); padding: 0.9rem 2rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 1px solid var(--border); transition: border-color var(--transition), background var(--transition); }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
+    #hero-scroll { opacity: 0; margin-top: 4rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, var(--muted)); position: relative; overflow: hidden; }
+    .scroll-line::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 30px; background: linear-gradient(to bottom, var(--yellow), transparent); animation: scrollLine 2s ease infinite; }
+    @keyframes scrollLine { 0%{top:-30px} 100%{top:60px} }
+
+    /* ── STATS ───────────────────────────────────── */
+    #stats { padding: 4rem 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1000px; margin: 0 auto; text-align: center; }
+    @media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+    .stat-number { font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; font-weight: 700; color: var(--yellow); letter-spacing: -0.02em; }
+    .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* ── SERVICES ────────────────────────────────── */
+    #services { padding: 8rem 5%; }
+    .section-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); font-weight: 600; margin-bottom: 1rem; }
+    h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+    h2 span { color: var(--yellow); }
+    .section-head { max-width: 1200px; margin: 0 auto 4rem; display: flex; gap: 4rem; align-items: flex-end; }
+    .section-head p { color: var(--muted); line-height: 1.7; font-size: 1rem; max-width: 400px; flex-shrink: 0; }
+    @media(max-width:768px){.section-head{flex-direction:column;gap:1.5rem;}.section-head p{max-width:none;}}
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; max-width: 1200px; margin: 0 auto; background: var(--border); border: 1px solid var(--border); }
+    @media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:600px){.services-grid{grid-template-columns:1fr;}}
+    .service-card { background: var(--card); padding: 2.5rem; transition: background var(--transition); position: relative; overflow: hidden; }
+    .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--yellow-dim), transparent); opacity: 0; transition: opacity var(--transition); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon { width: 52px; height: 52px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; }
+    .service-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 0.8rem; }
+    .service-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+
+    /* ── WHY US ──────────────────────────────────── */
+    #why { padding: 8rem 5%; background: var(--dark); }
+    .why-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    @media(max-width:900px){.why-inner{grid-template-columns:1fr;gap:3rem;}}
+    .why-visual { position: relative; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+    .why-ring { position: absolute; border-radius: 50%; border: 1px solid var(--border); }
+    .why-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(245,197,24,0.1); animation: rotate 20s linear infinite; }
+    .why-ring:nth-child(2) { width: 75%; height: 75%; border-color: rgba(37,99,235,0.15); animation: rotate 15s linear infinite reverse; }
+    .why-ring:nth-child(3) { width: 50%; height: 50%; border-color: rgba(245,197,24,0.2); }
+    @keyframes rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .why-center { width: 120px; height: 120px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; z-index: 1; }
+    .why-dot { position: absolute; width: 8px; height: 8px; background: var(--yellow); border-radius: 50%; top: 5%; left: 50%; transform: translateX(-50%); box-shadow: 0 0 12px var(--yellow); }
+    .why-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
+    .why-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .why-check { width: 24px; height: 24px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.1rem; font-size: 0.7rem; color: var(--yellow); }
+    .why-item h4 { font-weight: 600; margin-bottom: 0.3rem; font-size: 1rem; }
+    .why-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+    /* ── PROCESS ─────────────────────────────────── */
+    #process { padding: 8rem 5%; }
+    .process-steps { max-width: 1200px; margin: 4rem auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+    @media(max-width:900px){.process-steps{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:500px){.process-steps{grid-template-columns:1fr;}}
+    .process-steps::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--yellow), transparent); }
+    .process-step { text-align: center; padding: 0 1.5rem 2rem; position: relative; }
+    .step-num { width: 56px; height: 56px; background: var(--card); border: 2px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--yellow); position: relative; z-index: 1; }
+    .process-step h3 { font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem; }
+    .process-step p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+    /* ── TESTIMONIAL ─────────────────────────────── */
+    #testimonial { padding: 8rem 5%; background: var(--dark); }
+    .testimonial-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+    blockquote { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 400; line-height: 1.6; color: var(--off-white); margin-bottom: 2rem; position: relative; }
+    blockquote::before { content: '"'; font-size: 6rem; color: var(--yellow); opacity: 0.2; position: absolute; top: -2rem; left: -1rem; font-family: Georgia, serif; line-height: 1; }
+    .quote-author { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+    .quote-avatar { width: 48px; height: 48px; background: var(--yellow-dim); border: 2px solid rgba(245,197,24,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: 'Space Grotesk', sans-serif; color: var(--yellow); }
+    .quote-name { font-weight: 600; font-size: 0.95rem; }
+    .quote-role { color: var(--muted); font-size: 0.82rem; }
+
+    /* ── CONTACT ─────────────────────────────────── */
+    #contact { padding: 8rem 5%; }
+    .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    @media(max-width:900px){.contact-inner{grid-template-columns:1fr;gap:3rem;}}
+    .contact-info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+    .contact-info-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .contact-icon { width: 44px; height: 44px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .contact-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+    .contact-value { font-weight: 600; font-size: 0.95rem; }
+    .contact-value a { color: var(--white); text-decoration: none; transition: color var(--transition); }
+    .contact-value a:hover { color: var(--yellow); }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .form-group input, .form-group textarea, .form-group select {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.85rem 1rem; color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color var(--transition);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: rgba(245,197,24,0.4); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .btn-submit { background: var(--yellow); color: var(--black); border: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: transform var(--transition), box-shadow var(--transition); align-self: flex-start; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,197,24,0.35); }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; }
+    .footer-logo span { color: var(--yellow); }
+    .footer-copy { color: var(--muted); font-size: 0.82rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; transition: color var(--transition); }
+    .footer-links a:hover { color: var(--white); }
+
+    /* ── SCROLL ANIMATIONS ───────────────────────── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">
+    <div class="word asia-letters">
+      <span>A</span><span>s</span><span>i</span><span>a</span>
+    </div>
+    <div class="space"></div>
+    <div class="word electric-letters">
+      <span>E</span><span>l</span><span>e</span><span>c</span><span>t</span><span>r</span><span>i</span><span>c</span>
+    </div>
+  </div>
+  <div class="loader-line"></div>
+  <div class="loader-sub">Brașov, România</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Asia <span>Electric</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Servicii</a></li>
+    <li><a href="#why">De ce noi</a></li>
+    <li><a href="#process">Proces</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:0758818051" class="nav-cta">☎ 0758 818 051</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div id="hero-badge">✦ Autorizat ANRE • Brașov</div>
+    <div class="hero-line-wrap"><div class="hero-line-inner">
+      <h1>Instalații Electrice</h1>
+    </div></div>
+    <div class="hero-line-wrap"><div class="hero-line-inner">
+      <h1><span class="accent">de Excepție</span></h1>
+    </div></div>
+    <p id="hero-sub">Executăm lucrări electrice rezidențiale, comerciale și industriale în Brașov și județ. Profesionalism, precizie și siguranță în fiecare proiect.</p>
+    <div id="hero-actions">
+      <a href="#contact" class="btn-primary">Solicită Ofertă Gratuită</a>
+      <a href="#services" class="btn-secondary">Descoperă Serviciile</a>
+    </div>
+    <div id="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Derulează</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="reveal">
+      <div class="stat-number">150+</div>
+      <div class="stat-label">Proiecte finalizate</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-number">3+</div>
+      <div class="stat-label">Ani experiență</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Clienți mulțumiți</div>
+    </div>
+    <div class="reveal">
+      <div class="stat-number">24h</div>
+      <div class="stat-label">Răspuns la urgențe</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-head reveal">
+    <div>
+      <div class="section-label">Ce facem</div>
+      <h2>Servicii <span>Electrice</span><br>Complete</h2>
+    </div>
+    <p>De la proiectare până la execuție și mentenanță, oferim soluții electrice complete pentru orice tip de obiectiv din Brașov și împrejurimi.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🏠</div>
+      <h3>Instalații Rezidențiale</h3>
+      <p>Tablouri electrice, prize, întrerupătoare, iluminat interior și exterior pentru case și apartamente. Execuție îngrijită și conformă normativelor.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🏢</div>
+      <h3>Instalații Comerciale</h3>
+      <p>Spații comerciale, birouri, restaurante și magazine. Proiectăm și executăm sisteme electrice eficiente energetic, dimensionate pentru fluxul tău de business.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🏭</div>
+      <h3>Instalații Industriale</h3>
+      <p>Hale industriale, linii de producție și echipamente trifazate. Avem experiență cu sisteme de putere medie și joasă tensiune.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">☀️</div>
+      <h3>Panouri Fotovoltaice</h3>
+      <p>Instalare sisteme solare On-Grid și Off-Grid. Reduci factura la curent cu până la 90%. Montaj autorizat cu garanție extinsă.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">⚡</div>
+      <h3>Tablouri Electrice</h3>
+      <p>Proiectare și montaj tablouri de distribuție, automatizări, protecție diferențială și siguranțe automate de ultimă generație.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔧</div>
+      <h3>Service & Mentenanță</h3>
+      <p>Intervenții rapide la avarii, revizii periodice și mentenanță preventivă. Disponibili 24/7 pentru urgențe electrice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="why-inner">
+    <div class="why-visual reveal">
+      <div class="why-ring"></div>
+      <div class="why-ring"></div>
+      <div class="why-ring"></div>
+      <div class="why-dot"></div>
+      <div class="why-center">⚡</div>
+    </div>
+    <div>
+      <div class="section-label reveal">De ce Asia Electric</div>
+      <h2 class="reveal">Calitate și <span>Siguranță</span><br>Garantate</h2>
+      <ul class="why-list" style="margin-top:2rem;">
+        <li class="why-item reveal">
+          <div class="why-check">✓</div>
+          <div>
+            <h4>Autorizați ANRE</h4>
+            <p>Toți electricienii noștri dețin atestate ANRE valide. Lucrăm conform normativelor în vigoare și emitem toate documentele necesare recepției.</p>
+          </div>
+        </li>
+        <li class="why-item reveal">
+          <div class="why-check">✓</div>
+          <div>
+            <h4>Materiale Premium</h4>
+            <p>Utilizăm exclusiv materiale certificate CE de la producători de top: Legrand, Schneider, ABB. Niciun compromis la siguranța instalației tale.</p>
+          </div>
+        </li>
+        <li class="why-item reveal">
+          <div class="why-check">✓</div>
+          <div>
+            <h4>Garanție 2 Ani</h4>
+            <p>Oferim garanție extinsă pentru toate lucrările executate. Suntem disponibili post-intervenție pentru orice ajustare sau problemă.</p>
+          </div>
+        </li>
+        <li class="why-item reveal">
+          <div class="why-check">✓</div>
+          <div>
+            <h4>Prețuri Transparente</h4>
+            <p>Ofertă detaliată înainte de începerea lucrărilor, fără costuri ascunse. Plătești exact cât s-a convenit.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div style="max-width:1200px;margin:0 auto;text-align:center;">
+    <div class="section-label reveal">Cum lucrăm</div>
+    <h2 class="reveal">Proces <span>Simplu</span> și Transparent</h2>
+  </div>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-num">01</div>
+      <h3>Consultație</h3>
+      <p>Suni sau scrii, îți răspundem în max 2 ore. Evaluăm cerința ta și stabilim o vizită gratuită.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">02</div>
+      <h3>Ofertă Gratuită</h3>
+      <p>Venim pe teren, evaluăm lucrarea și îți trimitem o ofertă detaliată fără nicio obligație.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">03</div>
+      <h3>Execuție</h3>
+      <p>Lucrăm îngrijit, respectăm termenele promise și curățăm locul de muncă după finalizare.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">04</div>
+      <h3>Recepție</h3>
+      <p>Testăm instalația, emitem documentele de recepție și oferim garanție 2 ani.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section id="testimonial">
+  <div class="testimonial-inner reveal">
+    <blockquote>
+      Am apelat la Asia Electric pentru renovarea completă a instalației electrice a apartamentului. Au venit prompt, au lucrat curat și au finalizat totul în termenul promis. Recomand cu toată încrederea!
+    </blockquote>
+    <div class="quote-author">
+      <div class="quote-avatar">AM</div>
+      <div>
+        <div class="quote-name">Andrei Moldovan</div>
+        <div class="quote-role">Client rezidențial, Brașov</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-label reveal">Contact</div>
+      <h2 class="reveal">Hai să <span>Discutăm</span><br>Proiectul Tău</h2>
+      <ul class="contact-info-list">
+        <li class="contact-info-item reveal">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Telefon</div>
+            <div class="contact-value"><a href="tel:0758818051">0758 818 051</a></div>
+          </div>
+        </li>
+        <li class="contact-info-item reveal">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value"><a href="mailto:asiaelectricbrasov@gmail.com">asiaelectricbrasov@gmail.com</a></div>
+          </div>
+        </li>
+        <li class="contact-info-item reveal">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Locație</div>
+            <div class="contact-value">Str. Camil Petrescu 5A, Brașov</div>
+          </div>
+        </li>
+        <li class="contact-info-item reveal">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-label">Program</div>
+            <div class="contact-value">Lun–Vin: 08:00–18:00 | Urgențe 24/7</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nume</label>
+          <input type="text" placeholder="Ioan Popescu" required>
+        </div>
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" placeholder="07xx xxx xxx" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tip lucrare</label>
+        <select>
+          <option>Instalație rezidențială</option>
+          <option>Instalație comercială</option>
+          <option>Instalație industrială</option>
+          <option>Panouri fotovoltaice</option>
+          <option>Tablou electric</option>
+          <option>Service / Urgență</option>
+          <option>Altele</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Descriere lucrare</label>
+        <textarea placeholder="Descrie pe scurt ce ai nevoie..."></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Trimite Mesaj →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Asia <span>Electric</span> Company</div>
+  <div class="footer-copy">© 2025 Asia Electric Company SRL · CUI 47369676 · Brașov</div>
+  <div class="footer-links">
+    <a href="#services">Servicii</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ── LOADER ────────────────────────────────────────
+  (function initLoader() {
+    const loader = document.getElementById('loader');
+    const letters = loader.querySelectorAll('.loader-logo span');
+    const loaderLine = loader.querySelector('.loader-line');
+    const loaderSub = loader.querySelector('.loader-sub');
+    document.body.style.overflow = 'hidden';
+
+    const tl = gsap.timeline({
+      onComplete: function () {
+        gsap.to(loader, {
+          yPercent: -100, duration: 0.9, ease: 'power3.inOut',
+          onComplete: function () {
+            loader.style.display = 'none';
+            document.body.style.overflow = '';
+            initHeroAnimation();
+          }
+        });
+      }
+    });
+
+    tl.to(letters, { opacity: 1, y: 0, duration: 0.06, stagger: 0.055, ease: 'power2.out' })
+      .to(loaderLine, { width: '220px', duration: 0.6, ease: 'power2.out' }, '-=0.2')
+      .to(loaderSub, { opacity: 1, duration: 0.4, ease: 'power2.out' }, '-=0.2')
+      .to({}, { duration: 0.7 });
+  })();
+
+  // ── HERO ANIMATION ────────────────────────────────
+  function initHeroAnimation() {
+    const tl = gsap.timeline();
+    tl.to('#hero-badge', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
+      .to('.hero-line-inner', { y: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out' }, '-=0.2')
+      .to('#hero-sub', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
+      .to('#hero-actions', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
+      .to('#hero-scroll', { opacity: 1, duration: 0.6 }, '-=0.2');
+    initScrollAnimations();
+  }
+
+  // ── SCROLL REVEAL ─────────────────────────────────
+  function initScrollAnimations() {
+    document.querySelectorAll('.reveal').forEach(el => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      observer.observe(el);
+    });
+  }
+
+  // ── NAV SCROLL ────────────────────────────────────
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── FORM ──────────────────────────────────────────
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = '✓ Mesaj trimis!';
+    btn.style.background = '#22c55e';
+    setTimeout(() => { btn.textContent = 'Trimite Mesaj →'; btn.style.background = ''; }, 3000);
+  }
+</script>
+</body>
+</html>
