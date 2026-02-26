@@ -4,361 +4,609 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Asia Electric Company | Instalații Electrice Brașov</title>
-  <meta name="description" content="Instalații electrice profesionale în Brașov. Autorizați ANRE. Rezidențial, comercial, industrial. Sună: 0758 818 051">
+  <meta name="description" content="Instalații electrice profesionale în Brașov. Rezidențial, comercial, industrial. Autorizați ANRE. ☎ 0758 818 051">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
   <style>
     :root {
-      --black: #050507;
-      --dark: #0d0d14;
-      --card: #111118;
-      --border: rgba(255,255,255,0.07);
-      --white: #ffffff;
-      --off-white: #e8e8f0;
-      --muted: #8888a0;
-      --yellow: #f5c518;
-      --yellow-dim: rgba(245,197,24,0.12);
-      --blue: #2563eb;
-      --blue-glow: rgba(37,99,235,0.2);
-      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --yellow: #f0b429;
+      --dark:   #0a0a0a;
+      --mid:    #141414;
+      --white:  #f5f5f0;
+      --muted:  #888;
+      --border: rgba(255,255,255,0.08);
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
-    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    body { background: var(--dark); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-    /* ── LOADER ─────────────────────────────────── */
-    #loader {
-      position: fixed; inset: 0;
-      background: var(--black);
-      z-index: 10000;
-      display: flex; align-items: center; justify-content: center; flex-direction: column;
+    /* ─── POWER-ON INTRO ─────────────────────────────────
+       Un „volt" — linie orizontală care se extinde vertical
+       ca un vechi televizor care porneste, descoperind situl.
+    ──────────────────────────────────────────────────────── */
+    #intro {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--dark); pointer-events: none;
     }
-    .loader-logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -0.02em; }
-    .loader-logo .word { display: flex; }
-    .loader-logo .space { width: 0.35em; }
-    .loader-logo span { opacity: 0; transform: translateY(30px); display: inline-block; }
-    .loader-logo .asia-letters span { color: var(--white); }
-    .loader-logo .electric-letters span { color: var(--yellow); }
-    .loader-line { width: 0; height: 2px; background: linear-gradient(90deg, var(--yellow), var(--blue)); margin-top: 1.2rem; border-radius: 2px; }
-    .loader-sub { opacity: 0; margin-top: 1rem; font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+    .intro-line {
+      width: 100vw; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--yellow) 20%, #fff 50%, var(--yellow) 80%, transparent 100%);
+      box-shadow: 0 0 20px var(--yellow), 0 0 60px rgba(240,180,41,0.4);
+      transform: scaleX(0);
+    }
 
-    /* ── NAV ─────────────────────────────────────── */
+    /* ─── NAV ────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.5rem 5%;
-      transition: background var(--transition), padding var(--transition), box-shadow var(--transition);
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 1.8rem 6%;
+      transition: all 0.4s ease;
     }
-    nav.scrolled { background: rgba(5,5,7,0.95); backdrop-filter: blur(20px); padding: 1rem 5%; box-shadow: 0 1px 0 var(--border); }
-    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; }
-    .nav-logo span { color: var(--yellow); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color var(--transition); }
+    nav.stuck {
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(16px);
+      padding: 1rem 6%;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .logo em { color: var(--yellow); font-style: normal; }
+    .nav-r { display:flex; align-items:center; gap: 2.5rem; }
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a { color: rgba(255,255,255,0.55); text-decoration:none; font-size:0.82rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:500; transition: color 0.3s; }
     .nav-links a:hover { color: var(--white); }
-    .nav-cta { background: var(--yellow); color: var(--black); padding: 0.6rem 1.5rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: transform var(--transition), box-shadow var(--transition); }
-    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,197,24,0.35); }
-    @media(max-width:768px){.nav-links{display:none;}.nav-cta{display:none;}}
+    .nav-tel { font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; color: var(--yellow); text-decoration:none; border: 1px solid var(--yellow); padding: 0.5rem 1.2rem; border-radius:3px; transition: all 0.3s; }
+    .nav-tel:hover { background: var(--yellow); color: var(--dark); }
+    @media(max-width:768px){ .nav-links{display:none;} }
 
-    /* ── HERO ────────────────────────────────────── */
+    /* ─── HERO ───────────────────────────────────────────── */
     #hero {
-      min-height: 100vh; display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden; padding: 8rem 5% 5rem;
+      height: 100vh; min-height: 640px;
+      position: relative; display:flex; align-items:flex-end;
+      overflow: hidden;
     }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(245,197,24,0.06) 0%, transparent 70%),
-                  radial-gradient(ellipse 60% 80% at 80% 20%, rgba(37,99,235,0.08) 0%, transparent 60%);
+    .hero-img {
+      position: absolute; inset:0;
+      background: url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85') center/cover no-repeat;
     }
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    .hero-img::after {
+      content:'';
+      position:absolute; inset:0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,10,10,0.3) 0%,
+        rgba(10,10,10,0.1) 30%,
+        rgba(10,10,10,0.6) 70%,
+        rgba(10,10,10,0.97) 100%
+      );
     }
-    .hero-content { position: relative; text-align: center; max-width: 900px; margin: 0 auto; }
-    #hero-badge { opacity: 0; transform: translateY(20px); display: inline-flex; align-items: center; gap: 0.5rem; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.25); border-radius: 50px; padding: 0.4rem 1rem; font-size: 0.8rem; color: var(--yellow); font-weight: 600; margin-bottom: 2rem; letter-spacing: 0.05em; }
-    #hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--yellow); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
-    .hero-line-wrap { overflow: hidden; }
-    .hero-line-inner { transform: translateY(100%); }
-    h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.8rem, 8vw, 6.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 0.15em; }
-    h1 .accent { color: var(--yellow); }
-    #hero-sub { opacity: 0; transform: translateY(20px); font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted); max-width: 580px; margin: 1.8rem auto 0; line-height: 1.7; }
-    #hero-actions { opacity: 0; transform: translateY(20px); display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
-    .btn-primary { background: var(--yellow); color: var(--black); padding: 0.9rem 2rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: transform var(--transition), box-shadow var(--transition); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(245,197,24,0.4); }
-    .btn-secondary { background: transparent; color: var(--white); padding: 0.9rem 2rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 1px solid var(--border); transition: border-color var(--transition), background var(--transition); }
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
-    #hero-scroll { opacity: 0; margin-top: 4rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; }
-    .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, var(--muted)); position: relative; overflow: hidden; }
-    .scroll-line::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 30px; background: linear-gradient(to bottom, var(--yellow), transparent); animation: scrollLine 2s ease infinite; }
-    @keyframes scrollLine { 0%{top:-30px} 100%{top:60px} }
-
-    /* ── STATS ───────────────────────────────────── */
-    #stats { padding: 4rem 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1000px; margin: 0 auto; text-align: center; }
-    @media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
-    .stat-number { font-family: 'Space Grotesk', sans-serif; font-size: 2.8rem; font-weight: 700; color: var(--yellow); letter-spacing: -0.02em; }
-    .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
-
-    /* ── SERVICES ────────────────────────────────── */
-    #services { padding: 8rem 5%; }
-    .section-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); font-weight: 600; margin-bottom: 1rem; }
-    h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
-    h2 span { color: var(--yellow); }
-    .section-head { max-width: 1200px; margin: 0 auto 4rem; display: flex; gap: 4rem; align-items: flex-end; }
-    .section-head p { color: var(--muted); line-height: 1.7; font-size: 1rem; max-width: 400px; flex-shrink: 0; }
-    @media(max-width:768px){.section-head{flex-direction:column;gap:1.5rem;}.section-head p{max-width:none;}}
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; max-width: 1200px; margin: 0 auto; background: var(--border); border: 1px solid var(--border); }
-    @media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr);}}
-    @media(max-width:600px){.services-grid{grid-template-columns:1fr;}}
-    .service-card { background: var(--card); padding: 2.5rem; transition: background var(--transition); position: relative; overflow: hidden; }
-    .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--yellow-dim), transparent); opacity: 0; transition: opacity var(--transition); }
-    .service-card:hover::before { opacity: 1; }
-    .service-icon { width: 52px; height: 52px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; }
-    .service-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 0.8rem; }
-    .service-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
-
-    /* ── WHY US ──────────────────────────────────── */
-    #why { padding: 8rem 5%; background: var(--dark); }
-    .why-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
-    @media(max-width:900px){.why-inner{grid-template-columns:1fr;gap:3rem;}}
-    .why-visual { position: relative; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
-    .why-ring { position: absolute; border-radius: 50%; border: 1px solid var(--border); }
-    .why-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(245,197,24,0.1); animation: rotate 20s linear infinite; }
-    .why-ring:nth-child(2) { width: 75%; height: 75%; border-color: rgba(37,99,235,0.15); animation: rotate 15s linear infinite reverse; }
-    .why-ring:nth-child(3) { width: 50%; height: 50%; border-color: rgba(245,197,24,0.2); }
-    @keyframes rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-    .why-center { width: 120px; height: 120px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; z-index: 1; }
-    .why-dot { position: absolute; width: 8px; height: 8px; background: var(--yellow); border-radius: 50%; top: 5%; left: 50%; transform: translateX(-50%); box-shadow: 0 0 12px var(--yellow); }
-    .why-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
-    .why-item { display: flex; gap: 1rem; align-items: flex-start; }
-    .why-check { width: 24px; height: 24px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.1rem; font-size: 0.7rem; color: var(--yellow); }
-    .why-item h4 { font-weight: 600; margin-bottom: 0.3rem; font-size: 1rem; }
-    .why-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
-
-    /* ── PROCESS ─────────────────────────────────── */
-    #process { padding: 8rem 5%; }
-    .process-steps { max-width: 1200px; margin: 4rem auto 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
-    @media(max-width:900px){.process-steps{grid-template-columns:repeat(2,1fr);}}
-    @media(max-width:500px){.process-steps{grid-template-columns:1fr;}}
-    .process-steps::before { content: ''; position: absolute; top: 28px; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--yellow), transparent); }
-    .process-step { text-align: center; padding: 0 1.5rem 2rem; position: relative; }
-    .step-num { width: 56px; height: 56px; background: var(--card); border: 2px solid var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--yellow); position: relative; z-index: 1; }
-    .process-step h3 { font-weight: 600; margin-bottom: 0.5rem; font-size: 1rem; }
-    .process-step p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
-
-    /* ── TESTIMONIAL ─────────────────────────────── */
-    #testimonial { padding: 8rem 5%; background: var(--dark); }
-    .testimonial-inner { max-width: 800px; margin: 0 auto; text-align: center; }
-    blockquote { font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 400; line-height: 1.6; color: var(--off-white); margin-bottom: 2rem; position: relative; }
-    blockquote::before { content: '"'; font-size: 6rem; color: var(--yellow); opacity: 0.2; position: absolute; top: -2rem; left: -1rem; font-family: Georgia, serif; line-height: 1; }
-    .quote-author { display: flex; align-items: center; justify-content: center; gap: 1rem; }
-    .quote-avatar { width: 48px; height: 48px; background: var(--yellow-dim); border: 2px solid rgba(245,197,24,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: 'Space Grotesk', sans-serif; color: var(--yellow); }
-    .quote-name { font-weight: 600; font-size: 0.95rem; }
-    .quote-role { color: var(--muted); font-size: 0.82rem; }
-
-    /* ── CONTACT ─────────────────────────────────── */
-    #contact { padding: 8rem 5%; }
-    .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-    @media(max-width:900px){.contact-inner{grid-template-columns:1fr;gap:3rem;}}
-    .contact-info-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
-    .contact-info-item { display: flex; gap: 1rem; align-items: flex-start; }
-    .contact-icon { width: 44px; height: 44px; background: var(--yellow-dim); border: 1px solid rgba(245,197,24,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-    .contact-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
-    .contact-value { font-weight: 600; font-size: 0.95rem; }
-    .contact-value a { color: var(--white); text-decoration: none; transition: color var(--transition); }
-    .contact-value a:hover { color: var(--yellow); }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media(max-width:600px){.form-row{grid-template-columns:1fr;}}
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-group label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .form-group input, .form-group textarea, .form-group select {
-      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-      padding: 0.85rem 1rem; color: var(--white); font-family: 'Inter', sans-serif; font-size: 0.9rem;
-      outline: none; transition: border-color var(--transition);
+    .hero-content {
+      position: relative; z-index:2;
+      padding: 0 6% 7rem; width:100%;
+      display:grid; grid-template-columns: 1fr auto;
+      align-items: flex-end; gap: 3rem;
     }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: rgba(245,197,24,0.4); }
-    .form-group textarea { resize: vertical; min-height: 120px; }
-    .btn-submit { background: var(--yellow); color: var(--black); border: none; padding: 1rem 2rem; border-radius: 50px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: transform var(--transition), box-shadow var(--transition); align-self: flex-start; }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,197,24,0.35); }
+    @media(max-width:768px){ .hero-content{grid-template-columns:1fr;} }
+    .hero-tag {
+      display: inline-flex; align-items:center; gap:0.5rem;
+      font-size: 0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+      color: var(--yellow); font-weight:600; margin-bottom: 1.5rem;
+    }
+    .hero-tag::before { content:''; width:30px; height:1px; background:var(--yellow); }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800; line-height: 0.95;
+      letter-spacing: -0.02em;
+    }
+    h1 .stroke {
+      -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+      color: transparent;
+    }
+    .hero-desc {
+      max-width: 440px;
+      display:flex; flex-direction:column; align-items:flex-end; gap:1.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .hero-desc p { color: rgba(255,255,255,0.6); font-size:0.95rem; line-height:1.7; text-align:right; }
+    .hero-cta { display:flex; gap:1rem; }
+    .btn { display:inline-block; text-decoration:none; font-weight:600; font-size:0.85rem; letter-spacing:0.06em; text-transform:uppercase; padding:0.85rem 2rem; border-radius:3px; transition: all 0.3s; }
+    .btn-fill { background:var(--yellow); color:var(--dark); }
+    .btn-fill:hover { background:#fff; transform:translateY(-2px); }
+    .btn-out { border:1px solid rgba(255,255,255,0.3); color:var(--white); }
+    .btn-out:hover { border-color:var(--white); }
+    .hero-scroll {
+      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+      z-index:3; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+      color:rgba(255,255,255,0.3); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase;
+      animation: bob 2.5s ease-in-out infinite;
+    }
+    .hero-scroll svg { width:18px; opacity:0.5; }
+    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
 
-    /* ── FOOTER ──────────────────────────────────── */
-    footer { border-top: 1px solid var(--border); padding: 2.5rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; }
-    .footer-logo span { color: var(--yellow); }
-    .footer-copy { color: var(--muted); font-size: 0.82rem; }
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; transition: color var(--transition); }
-    .footer-links a:hover { color: var(--white); }
+    /* ─── TICKER BAND ────────────────────────────────────── */
+    .ticker {
+      background: var(--yellow); overflow:hidden; padding:0.75rem 0;
+      display:flex; white-space:nowrap;
+    }
+    .ticker-inner {
+      display:inline-flex; gap:0; animation: ticker 25s linear infinite;
+    }
+    .ticker-inner span {
+      font-family:'Syne',sans-serif; font-weight:700; font-size:0.8rem;
+      letter-spacing:0.1em; text-transform:uppercase; color:var(--dark);
+      padding: 0 2.5rem;
+    }
+    .ticker-inner span::after { content:'⚡'; margin-left:2.5rem; }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-    /* ── SCROLL ANIMATIONS ───────────────────────── */
-    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* ─── NUMBERS ─────────────────────────────────────────── */
+    #numbers {
+      display:grid; grid-template-columns: repeat(4,1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    @media(max-width:700px){ #numbers{grid-template-columns:repeat(2,1fr);} }
+    .num-item {
+      padding: 3.5rem 6%;
+      border-right: 1px solid var(--border);
+    }
+    .num-item:last-child { border-right:none; }
+    .num-val {
+      font-family:'Syne',sans-serif; font-size:clamp(2.5rem,5vw,4rem);
+      font-weight:800; line-height:1; color:var(--yellow);
+      display:block; margin-bottom:0.6rem;
+    }
+    .num-label { font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; }
+
+    /* ─── SERVICES ────────────────────────────────────────── */
+    #services { padding: 8rem 6%; }
+    .sec-head {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      margin-bottom: 4rem;
+    }
+    @media(max-width:768px){ .sec-head{flex-direction:column;align-items:flex-start;gap:1rem;} }
+    .sec-eyebrow {
+      font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--yellow); font-weight:600; margin-bottom:1rem;
+      display:flex; align-items:center; gap:0.8rem;
+    }
+    .sec-eyebrow::before { content:''; width:24px; height:1px; background:var(--yellow); }
+    h2 {
+      font-family:'Syne',sans-serif;
+      font-size:clamp(2rem,4vw,3.2rem);
+      font-weight:800; line-height:1.1; letter-spacing:-0.02em;
+    }
+    h2 em { font-style:normal; color:var(--yellow); }
+    .sec-link {
+      color:rgba(255,255,255,0.4); text-decoration:none; font-size:0.82rem;
+      letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center;
+      gap:0.5rem; transition:color 0.3s; white-space:nowrap;
+    }
+    .sec-link:hover { color:var(--white); }
+
+    /* BENTO GRID */
+    .bento {
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 2px;
+    }
+    @media(max-width:900px){ .bento{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:600px){ .bento{grid-template-columns:1fr;} }
+
+    .bento-card {
+      background: var(--mid);
+      padding: 2.5rem;
+      position:relative; overflow:hidden;
+      transition: background 0.4s;
+      cursor: default;
+    }
+    .bento-card:hover { background: #1a1a1a; }
+    .bento-card.featured {
+      grid-column: span 2;
+      background: var(--yellow);
+      color: var(--dark);
+    }
+    .bento-card.featured .bc-num { color: rgba(0,0,0,0.2); }
+    .bento-card.featured .bc-title { color: var(--dark); }
+    .bento-card.featured .bc-desc { color: rgba(0,0,0,0.65); }
+    @media(max-width:900px){ .bento-card.featured{grid-column:span 1;} }
+
+    .bc-num {
+      font-family:'Syne',sans-serif; font-weight:800;
+      font-size:0.7rem; letter-spacing:0.15em; color:var(--muted);
+      margin-bottom:2rem;
+    }
+    .bc-icon { font-size:2rem; margin-bottom:1.2rem; display:block; }
+    .bc-title {
+      font-family:'Syne',sans-serif; font-weight:700;
+      font-size:1.1rem; margin-bottom:0.8rem;
+    }
+    .bc-desc { color:var(--muted); font-size:0.88rem; line-height:1.65; }
+    .bento-card.featured .bc-desc { color: rgba(0,0,0,0.65); }
+    .bc-arrow {
+      position:absolute; bottom:2.5rem; right:2.5rem;
+      width:36px; height:36px; border-radius:50%;
+      border:1px solid rgba(255,255,255,0.15);
+      display:flex; align-items:center; justify-content:center;
+      font-size:0.9rem; transition:all 0.3s;
+    }
+    .bento-card:hover .bc-arrow { background:var(--yellow); border-color:var(--yellow); color:var(--dark); transform:rotate(45deg); }
+    .bento-card.featured .bc-arrow { border-color:rgba(0,0,0,0.2); color:var(--dark); }
+    .bento-card.featured:hover .bc-arrow { background:var(--dark); border-color:var(--dark); color:var(--yellow); }
+
+    /* ─── PHOTO BREAK ─────────────────────────────────────── */
+    .photo-break {
+      height: 500px; position:relative; overflow:hidden;
+    }
+    .photo-break img {
+      width:100%; height:100%; object-fit:cover;
+      filter: brightness(0.6) saturate(0.8);
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .photo-break:hover img { transform: scale(1); }
+    .photo-break-overlay {
+      position:absolute; inset:0;
+      display:flex; align-items:center; padding:0 6%;
+      background: linear-gradient(90deg, rgba(10,10,10,0.7) 0%, transparent 60%);
+    }
+    .photo-break-text { max-width:550px; }
+    .photo-break-text h3 {
+      font-family:'Syne',sans-serif; font-size:clamp(1.8rem,4vw,3rem);
+      font-weight:800; line-height:1.1; margin-bottom:1.2rem;
+    }
+    .photo-break-text p { color:rgba(255,255,255,0.65); line-height:1.7; margin-bottom:2rem; }
+
+    /* ─── WHY ────────────────────────────────────────────── */
+    #why { padding: 8rem 6%; background: var(--mid); }
+    .why-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start;
+    }
+    @media(max-width:900px){ .why-grid{grid-template-columns:1fr;gap:3rem;} }
+    .why-img {
+      position:relative; border-radius:4px; overflow:hidden; aspect-ratio:4/5;
+    }
+    .why-img img { width:100%; height:100%; object-fit:cover; display:block; }
+    .why-img::after {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%);
+    }
+    .why-badge {
+      position:absolute; bottom:2rem; left:2rem; right:2rem; z-index:2;
+      background:rgba(240,180,41,0.15);
+      border:1px solid rgba(240,180,41,0.3);
+      backdrop-filter:blur(10px);
+      border-radius:4px; padding:1.2rem;
+      display:flex; align-items:center; gap:1rem;
+    }
+    .why-badge-icon { font-size:1.5rem; }
+    .why-badge-text { font-size:0.82rem; }
+    .why-badge-text strong { display:block; color:var(--yellow); margin-bottom:0.2rem; font-family:'Syne',sans-serif; }
+    .why-badge-text span { color:rgba(255,255,255,0.6); font-size:0.78rem; }
+
+    .why-content { padding-top:1rem; }
+    .check-list { list-style:none; display:flex; flex-direction:column; gap:1px; margin-top:2.5rem; }
+    .check-item {
+      display:flex; gap:1.5rem; align-items:flex-start;
+      padding:1.5rem 0; border-bottom:1px solid var(--border);
+    }
+    .check-num {
+      font-family:'Syne',sans-serif; font-size:0.7rem;
+      font-weight:700; color:var(--yellow); letter-spacing:0.1em;
+      min-width:2rem; padding-top:0.2rem;
+    }
+    .check-item h4 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:0.4rem; }
+    .check-item p { color:var(--muted); font-size:0.88rem; line-height:1.6; }
+
+    /* ─── PROCESS ─────────────────────────────────────────── */
+    #process { padding:8rem 6%; }
+    .process-grid {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:2px;
+      margin-top:4rem;
+    }
+    @media(max-width:900px){ .process-grid{grid-template-columns:repeat(2,1fr);} }
+    .proc-item {
+      padding:2.5rem 2rem;
+      border-left:1px solid var(--border);
+      position:relative;
+    }
+    .proc-item:first-child { border-left:none; }
+    .proc-n {
+      font-family:'Syne',sans-serif; font-size:3rem; font-weight:800;
+      color:rgba(240,180,41,0.15); line-height:1; margin-bottom:1.5rem;
+      display:block;
+    }
+    .proc-item h3 { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.6rem; }
+    .proc-item p { color:var(--muted); font-size:0.85rem; line-height:1.6; }
+    .proc-dot {
+      width:8px; height:8px; background:var(--yellow); border-radius:50%;
+      position:absolute; top:2.5rem; left:-4.5px;
+    }
+    .proc-item:first-child .proc-dot { display:none; }
+
+    /* ─── CTA BAND ───────────────────────────────────────── */
+    #cta-band {
+      background: var(--yellow); padding:5rem 6%;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:2rem; flex-wrap:wrap;
+    }
+    #cta-band h2 { font-size:clamp(1.8rem,4vw,3rem); color:var(--dark); max-width:600px; }
+    .cta-tel {
+      font-family:'Syne',sans-serif; font-size:clamp(1.5rem,3vw,2.2rem);
+      font-weight:800; color:var(--dark); text-decoration:none;
+      border-bottom:3px solid rgba(0,0,0,0.3); padding-bottom:0.2rem;
+      white-space:nowrap;
+    }
+
+    /* ─── CONTACT ─────────────────────────────────────────── */
+    #contact { padding:8rem 6%; }
+    .contact-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:6rem; }
+    @media(max-width:900px){ .contact-grid{grid-template-columns:1fr;gap:3rem;} }
+    .contact-cards { display:flex; flex-direction:column; gap:2px; margin-top:2.5rem; }
+    .contact-card {
+      background:var(--mid); padding:1.5rem;
+      display:flex; gap:1.2rem; align-items:center;
+      border-radius:3px; transition:background 0.3s;
+    }
+    .contact-card:hover { background:#1c1c1c; }
+    .cc-icon {
+      width:44px; height:44px; background:rgba(240,180,41,0.12);
+      border:1px solid rgba(240,180,41,0.2);
+      border-radius:8px; display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0;
+    }
+    .cc-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.2rem; }
+    .cc-val { font-weight:600; font-size:0.95rem; }
+    .cc-val a { color:var(--white); text-decoration:none; transition:color 0.3s; }
+    .cc-val a:hover { color:var(--yellow); }
+
+    form { display:flex; flex-direction:column; gap:1rem; }
+    .fg { display:flex; flex-direction:column; gap:0.4rem; }
+    .fg label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; }
+    .fg input, .fg textarea, .fg select {
+      background:#111; border:1px solid var(--border);
+      border-radius:3px; padding:0.9rem 1rem;
+      color:var(--white); font-family:'Inter',sans-serif; font-size:0.9rem;
+      outline:none; transition:border-color 0.3s;
+      -webkit-appearance:none;
+    }
+    .fg input:focus, .fg textarea:focus, .fg select:focus {
+      border-color:rgba(240,180,41,0.5);
+    }
+    .fg textarea { resize:vertical; min-height:130px; }
+    .fg-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:600px){ .fg-row{grid-template-columns:1fr;} }
+    .submit-btn {
+      background:var(--yellow); color:var(--dark);
+      border:none; padding:1rem 2.5rem; border-radius:3px;
+      font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem;
+      letter-spacing:0.06em; text-transform:uppercase;
+      cursor:pointer; align-self:flex-start;
+      transition:all 0.3s;
+    }
+    .submit-btn:hover { background:#fff; transform:translateY(-2px); }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      border-top:1px solid var(--border);
+      padding:2rem 6%;
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:1rem;
+    }
+    footer .logo { font-size:0.9rem; }
+    .foot-copy { color:var(--muted); font-size:0.78rem; }
+    .foot-links { display:flex; gap:2rem; }
+    .foot-links a { color:var(--muted); text-decoration:none; font-size:0.78rem; transition:color 0.3s; }
+    .foot-links a:hover { color:var(--white); }
+
+    /* ─── SCROLL REVEALS ──────────────────────────────────── */
+    .sr { opacity:0; transform:translateY(30px); }
   </style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-logo">
-    <div class="word asia-letters">
-      <span>A</span><span>s</span><span>i</span><span>a</span>
-    </div>
-    <div class="space"></div>
-    <div class="word electric-letters">
-      <span>E</span><span>l</span><span>e</span><span>c</span><span>t</span><span>r</span><span>i</span><span>c</span>
-    </div>
-  </div>
-  <div class="loader-line"></div>
-  <div class="loader-sub">Brașov, România</div>
-</div>
+<!-- POWER-ON INTRO -->
+<div id="intro"><div class="intro-line"></div></div>
 
 <!-- NAV -->
 <nav id="nav">
-  <div class="nav-logo">Asia <span>Electric</span></div>
-  <ul class="nav-links">
-    <li><a href="#services">Servicii</a></li>
-    <li><a href="#why">De ce noi</a></li>
-    <li><a href="#process">Proces</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="tel:0758818051" class="nav-cta">☎ 0758 818 051</a>
+  <div class="logo">Asia <em>Electric</em></div>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#services">Servicii</a></li>
+      <li><a href="#why">Despre</a></li>
+      <li><a href="#process">Proces</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="tel:0758818051" class="nav-tel">☎ 0758 818 051</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
+  <div class="hero-img"></div>
   <div class="hero-content">
-    <div id="hero-badge">✦ Autorizat ANRE • Brașov</div>
-    <div class="hero-line-wrap"><div class="hero-line-inner">
-      <h1>Instalații Electrice</h1>
-    </div></div>
-    <div class="hero-line-wrap"><div class="hero-line-inner">
-      <h1><span class="accent">de Excepție</span></h1>
-    </div></div>
-    <p id="hero-sub">Executăm lucrări electrice rezidențiale, comerciale și industriale în Brașov și județ. Profesionalism, precizie și siguranță în fiecare proiect.</p>
-    <div id="hero-actions">
-      <a href="#contact" class="btn-primary">Solicită Ofertă Gratuită</a>
-      <a href="#services" class="btn-secondary">Descoperă Serviciile</a>
+    <div>
+      <div class="hero-tag">Instalații Electrice · Brașov · Est. 2022</div>
+      <h1>Putere<br>în <span class="stroke">fiecare</span><br>proiect.</h1>
     </div>
-    <div id="hero-scroll">
-      <div class="scroll-line"></div>
-      <span>Derulează</span>
+    <div class="hero-desc">
+      <p>Executăm instalații electrice rezidențiale, comerciale și industriale în Brașov și județ. Autorizați ANRE, materiale premium, garanție 2 ani.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-fill">Ofertă gratuită</a>
+        <a href="#services" class="btn btn-out">Servicii</a>
+      </div>
     </div>
+  </div>
+  <div class="hero-scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+    <span>Scroll</span>
   </div>
 </section>
 
-<!-- STATS -->
-<section id="stats">
-  <div class="stats-grid">
-    <div class="reveal">
-      <div class="stat-number">150+</div>
-      <div class="stat-label">Proiecte finalizate</div>
-    </div>
-    <div class="reveal">
-      <div class="stat-number">3+</div>
-      <div class="stat-label">Ani experiență</div>
-    </div>
-    <div class="reveal">
-      <div class="stat-number">100%</div>
-      <div class="stat-label">Clienți mulțumiți</div>
-    </div>
-    <div class="reveal">
-      <div class="stat-number">24h</div>
-      <div class="stat-label">Răspuns la urgențe</div>
-    </div>
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner">
+    <span>Instalații Rezidențiale</span>
+    <span>Tablouri Electrice</span>
+    <span>Panouri Fotovoltaice</span>
+    <span>Instalații Industriale</span>
+    <span>Service 24/7</span>
+    <span>Autorizat ANRE</span>
+    <span>Garanție 2 Ani</span>
+    <span>Brașov & Județ</span>
+    <span>Instalații Rezidențiale</span>
+    <span>Tablouri Electrice</span>
+    <span>Panouri Fotovoltaice</span>
+    <span>Instalații Industriale</span>
+    <span>Service 24/7</span>
+    <span>Autorizat ANRE</span>
+    <span>Garanție 2 Ani</span>
+    <span>Brașov & Județ</span>
   </div>
-</section>
+</div>
+
+<!-- NUMBERS -->
+<div id="numbers">
+  <div class="num-item sr">
+    <span class="num-val" data-count="150">0</span>
+    <span class="num-label">Proiecte finalizate</span>
+  </div>
+  <div class="num-item sr">
+    <span class="num-val" data-count="3">0</span>
+    <span class="num-label">Ani experiență</span>
+  </div>
+  <div class="num-item sr">
+    <span class="num-val">100%</span>
+    <span class="num-label">Clienți mulțumiți</span>
+  </div>
+  <div class="num-item sr">
+    <span class="num-val">24/7</span>
+    <span class="num-label">Suport urgențe</span>
+  </div>
+</div>
 
 <!-- SERVICES -->
 <section id="services">
-  <div class="section-head reveal">
+  <div class="sec-head">
     <div>
-      <div class="section-label">Ce facem</div>
-      <h2>Servicii <span>Electrice</span><br>Complete</h2>
+      <div class="sec-eyebrow">Servicii</div>
+      <h2>Ce facem<br>pentru <em>tine</em></h2>
     </div>
-    <p>De la proiectare până la execuție și mentenanță, oferim soluții electrice complete pentru orice tip de obiectiv din Brașov și împrejurimi.</p>
+    <a href="#contact" class="sec-link">Solicită ofertă →</a>
   </div>
-  <div class="services-grid">
-    <div class="service-card reveal">
-      <div class="service-icon">🏠</div>
-      <h3>Instalații Rezidențiale</h3>
-      <p>Tablouri electrice, prize, întrerupătoare, iluminat interior și exterior pentru case și apartamente. Execuție îngrijită și conformă normativelor.</p>
+
+  <div class="bento">
+    <div class="bento-card featured sr">
+      <div class="bc-num">01</div>
+      <span class="bc-icon">🏠</span>
+      <div class="bc-title">Instalații Rezidențiale</div>
+      <div class="bc-desc">Prize, tablouri electrice, iluminat interior și exterior. Execuție îngrijită cu materiale certificate CE, pentru case, vile și apartamente din Brașov.</div>
+      <div class="bc-arrow">↗</div>
     </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🏢</div>
-      <h3>Instalații Comerciale</h3>
-      <p>Spații comerciale, birouri, restaurante și magazine. Proiectăm și executăm sisteme electrice eficiente energetic, dimensionate pentru fluxul tău de business.</p>
+    <div class="bento-card sr">
+      <div class="bc-num">02</div>
+      <span class="bc-icon">🏢</span>
+      <div class="bc-title">Instalații Comerciale</div>
+      <div class="bc-desc">Birouri, spații comerciale și restaurante. Sisteme eficiente energetic, dimensionate pentru nevoile tale de business.</div>
+      <div class="bc-arrow">↗</div>
     </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🏭</div>
-      <h3>Instalații Industriale</h3>
-      <p>Hale industriale, linii de producție și echipamente trifazate. Avem experiență cu sisteme de putere medie și joasă tensiune.</p>
+    <div class="bento-card sr">
+      <div class="bc-num">03</div>
+      <span class="bc-icon">🏭</span>
+      <div class="bc-title">Instalații Industriale</div>
+      <div class="bc-desc">Hale de producție, echipamente trifazate, sisteme de putere medie și joasă tensiune pentru industrie.</div>
+      <div class="bc-arrow">↗</div>
     </div>
-    <div class="service-card reveal">
-      <div class="service-icon">☀️</div>
-      <h3>Panouri Fotovoltaice</h3>
-      <p>Instalare sisteme solare On-Grid și Off-Grid. Reduci factura la curent cu până la 90%. Montaj autorizat cu garanție extinsă.</p>
+    <div class="bento-card sr">
+      <div class="bc-num">04</div>
+      <span class="bc-icon">☀️</span>
+      <div class="bc-title">Panouri Fotovoltaice</div>
+      <div class="bc-desc">Sisteme On-Grid și Off-Grid cu montaj autorizat. Reducere factură curent cu până la 90%. ROI în 5-7 ani.</div>
+      <div class="bc-arrow">↗</div>
     </div>
-    <div class="service-card reveal">
-      <div class="service-icon">⚡</div>
-      <h3>Tablouri Electrice</h3>
-      <p>Proiectare și montaj tablouri de distribuție, automatizări, protecție diferențială și siguranțe automate de ultimă generație.</p>
+    <div class="bento-card sr">
+      <div class="bc-num">05</div>
+      <span class="bc-icon">⚡</span>
+      <div class="bc-title">Tablouri Electrice</div>
+      <div class="bc-desc">Proiectare și montaj tablouri de distribuție cu echipamente Legrand, Schneider, ABB. Protecție completă.</div>
+      <div class="bc-arrow">↗</div>
     </div>
-    <div class="service-card reveal">
-      <div class="service-icon">🔧</div>
-      <h3>Service & Mentenanță</h3>
-      <p>Intervenții rapide la avarii, revizii periodice și mentenanță preventivă. Disponibili 24/7 pentru urgențe electrice.</p>
+    <div class="bento-card sr">
+      <div class="bc-num">06</div>
+      <span class="bc-icon">🔧</span>
+      <div class="bc-title">Service & Urgențe</div>
+      <div class="bc-desc">Intervenție rapidă la avarii electrice, disponibili 24/7. Revizii periodice și mentenanță preventivă.</div>
+      <div class="bc-arrow">↗</div>
     </div>
   </div>
 </section>
 
-<!-- WHY US -->
-<section id="why">
-  <div class="why-inner">
-    <div class="why-visual reveal">
-      <div class="why-ring"></div>
-      <div class="why-ring"></div>
-      <div class="why-ring"></div>
-      <div class="why-dot"></div>
-      <div class="why-center">⚡</div>
+<!-- PHOTO BREAK -->
+<div class="photo-break">
+  <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80" alt="Echipa Asia Electric">
+  <div class="photo-break-overlay">
+    <div class="photo-break-text">
+      <h3>Echipă autorizată.<br>Calitate garantată.</h3>
+      <p>Fiecare electrician din echipa noastră deține atestare ANRE valabilă și experiență de minimum 3 ani. Lucrăm conform normativelor în vigoare și emitem toate documentele necesare.</p>
+      <a href="#contact" class="btn btn-fill">Contactează-ne</a>
     </div>
-    <div>
-      <div class="section-label reveal">De ce Asia Electric</div>
-      <h2 class="reveal">Calitate și <span>Siguranță</span><br>Garantate</h2>
-      <ul class="why-list" style="margin-top:2rem;">
-        <li class="why-item reveal">
-          <div class="why-check">✓</div>
+  </div>
+</div>
+
+<!-- WHY -->
+<section id="why">
+  <div class="why-grid">
+    <div class="why-img sr">
+      <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80" alt="Lucrare electrică profesională">
+      <div class="why-badge">
+        <div class="why-badge-icon">🏆</div>
+        <div class="why-badge-text">
+          <strong>Autorizat ANRE</strong>
+          <span>Toți tehnicienii certificați</span>
+        </div>
+      </div>
+    </div>
+    <div class="why-content">
+      <div class="sec-eyebrow sr">De ce noi</div>
+      <h2 class="sr">Standardele<br>noastre <em>contează</em></h2>
+      <ul class="check-list">
+        <li class="check-item sr">
+          <div class="check-num">01</div>
           <div>
-            <h4>Autorizați ANRE</h4>
-            <p>Toți electricienii noștri dețin atestate ANRE valide. Lucrăm conform normativelor în vigoare și emitem toate documentele necesare recepției.</p>
+            <h4>Materiale Premium Certificate</h4>
+            <p>Folosim exclusiv produse Legrand, Schneider Electric și ABB — mărci cu garanție europeană. Niciun compromis la siguranța instalației tale.</p>
           </div>
         </li>
-        <li class="why-item reveal">
-          <div class="why-check">✓</div>
+        <li class="check-item sr">
+          <div class="check-num">02</div>
           <div>
-            <h4>Materiale Premium</h4>
-            <p>Utilizăm exclusiv materiale certificate CE de la producători de top: Legrand, Schneider, ABB. Niciun compromis la siguranța instalației tale.</p>
+            <h4>Prețuri Transparente, Fără Surprize</h4>
+            <p>Ofertă detaliată înainte de orice lucrare. Prețul din ofertă = prețul din factură. Niciodată costuri ascunse.</p>
           </div>
         </li>
-        <li class="why-item reveal">
-          <div class="why-check">✓</div>
+        <li class="check-item sr">
+          <div class="check-num">03</div>
           <div>
-            <h4>Garanție 2 Ani</h4>
-            <p>Oferim garanție extinsă pentru toate lucrările executate. Suntem disponibili post-intervenție pentru orice ajustare sau problemă.</p>
+            <h4>Garanție 2 Ani pe Toate Lucrările</h4>
+            <p>Emitem certificat de garanție pentru fiecare lucrare. Orice problemă apărută în perioada de garanție — intervenim gratuit.</p>
           </div>
         </li>
-        <li class="why-item reveal">
-          <div class="why-check">✓</div>
+        <li class="check-item sr">
+          <div class="check-num">04</div>
           <div>
-            <h4>Prețuri Transparente</h4>
-            <p>Ofertă detaliată înainte de începerea lucrărilor, fără costuri ascunse. Plătești exact cât s-a convenit.</p>
+            <h4>Disponibili 24/7 pentru Urgențe</h4>
+            <p>Pene de curent, scurtcircuite sau avarii electrice nu au orar. Suntem disponibili oricând ai nevoie.</p>
           </div>
         </li>
       </ul>
@@ -368,125 +616,115 @@
 
 <!-- PROCESS -->
 <section id="process">
-  <div style="max-width:1200px;margin:0 auto;text-align:center;">
-    <div class="section-label reveal">Cum lucrăm</div>
-    <h2 class="reveal">Proces <span>Simplu</span> și Transparent</h2>
+  <div class="sec-head sr">
+    <div>
+      <div class="sec-eyebrow">Cum lucrăm</div>
+      <h2>Simplu și<br><em>transparent</em></h2>
+    </div>
   </div>
-  <div class="process-steps">
-    <div class="process-step reveal">
-      <div class="step-num">01</div>
+  <div class="process-grid">
+    <div class="proc-item sr">
+      <span class="proc-n">01</span>
+      <div class="proc-dot"></div>
       <h3>Consultație</h3>
-      <p>Suni sau scrii, îți răspundem în max 2 ore. Evaluăm cerința ta și stabilim o vizită gratuită.</p>
+      <p>Suni sau scrii. Răspundem în maximum 2 ore și stabilim o vizită gratuită la fața locului.</p>
     </div>
-    <div class="process-step reveal">
-      <div class="step-num">02</div>
+    <div class="proc-item sr">
+      <span class="proc-n">02</span>
+      <div class="proc-dot"></div>
       <h3>Ofertă Gratuită</h3>
-      <p>Venim pe teren, evaluăm lucrarea și îți trimitem o ofertă detaliată fără nicio obligație.</p>
+      <p>Evaluăm lucrarea, măsurăm și îți trimitem o ofertă detaliată, fără nicio obligație.</p>
     </div>
-    <div class="process-step reveal">
-      <div class="step-num">03</div>
+    <div class="proc-item sr">
+      <span class="proc-n">03</span>
+      <div class="proc-dot"></div>
       <h3>Execuție</h3>
       <p>Lucrăm îngrijit, respectăm termenele promise și curățăm locul de muncă după finalizare.</p>
     </div>
-    <div class="process-step reveal">
-      <div class="step-num">04</div>
-      <h3>Recepție</h3>
-      <p>Testăm instalația, emitem documentele de recepție și oferim garanție 2 ani.</p>
+    <div class="proc-item sr">
+      <span class="proc-n">04</span>
+      <div class="proc-dot"></div>
+      <h3>Recepție & Garanție</h3>
+      <p>Testăm instalația, emitem toate documentele și predăm cu certificat de garanție 2 ani.</p>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIAL -->
-<section id="testimonial">
-  <div class="testimonial-inner reveal">
-    <blockquote>
-      Am apelat la Asia Electric pentru renovarea completă a instalației electrice a apartamentului. Au venit prompt, au lucrat curat și au finalizat totul în termenul promis. Recomand cu toată încrederea!
-    </blockquote>
-    <div class="quote-author">
-      <div class="quote-avatar">AM</div>
-      <div>
-        <div class="quote-name">Andrei Moldovan</div>
-        <div class="quote-role">Client rezidențial, Brașov</div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- CTA BAND -->
+<div id="cta-band">
+  <h2>Ai un proiect? <br>Hai să vorbim astăzi.</h2>
+  <a href="tel:0758818051" class="cta-tel">0758 818 051</a>
+</div>
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="contact-inner">
+  <div class="contact-grid">
     <div>
-      <div class="section-label reveal">Contact</div>
-      <h2 class="reveal">Hai să <span>Discutăm</span><br>Proiectul Tău</h2>
-      <ul class="contact-info-list">
-        <li class="contact-info-item reveal">
-          <div class="contact-icon">📞</div>
+      <div class="sec-eyebrow sr">Contact</div>
+      <h2 class="sr">Trimite-ne<br>un <em>mesaj</em></h2>
+      <div class="contact-cards">
+        <div class="contact-card sr">
+          <div class="cc-icon">📞</div>
           <div>
-            <div class="contact-label">Telefon</div>
-            <div class="contact-value"><a href="tel:0758818051">0758 818 051</a></div>
+            <div class="cc-label">Telefon</div>
+            <div class="cc-val"><a href="tel:0758818051">0758 818 051</a></div>
           </div>
-        </li>
-        <li class="contact-info-item reveal">
-          <div class="contact-icon">✉️</div>
-          <div>
-            <div class="contact-label">Email</div>
-            <div class="contact-value"><a href="mailto:asiaelectricbrasov@gmail.com">asiaelectricbrasov@gmail.com</a></div>
-          </div>
-        </li>
-        <li class="contact-info-item reveal">
-          <div class="contact-icon">📍</div>
-          <div>
-            <div class="contact-label">Locație</div>
-            <div class="contact-value">Str. Camil Petrescu 5A, Brașov</div>
-          </div>
-        </li>
-        <li class="contact-info-item reveal">
-          <div class="contact-icon">🕐</div>
-          <div>
-            <div class="contact-label">Program</div>
-            <div class="contact-value">Lun–Vin: 08:00–18:00 | Urgențe 24/7</div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <form class="contact-form reveal" onsubmit="handleSubmit(event)">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Nume</label>
-          <input type="text" placeholder="Ioan Popescu" required>
         </div>
-        <div class="form-group">
-          <label>Telefon</label>
-          <input type="tel" placeholder="07xx xxx xxx" required>
+        <div class="contact-card sr">
+          <div class="cc-icon">✉️</div>
+          <div>
+            <div class="cc-label">Email</div>
+            <div class="cc-val"><a href="mailto:asiaelectricbrasov@gmail.com">asiaelectricbrasov@gmail.com</a></div>
+          </div>
+        </div>
+        <div class="contact-card sr">
+          <div class="cc-icon">📍</div>
+          <div>
+            <div class="cc-label">Adresă</div>
+            <div class="cc-val">Str. Camil Petrescu 5A, Brașov</div>
+          </div>
+        </div>
+        <div class="contact-card sr">
+          <div class="cc-icon">🕐</div>
+          <div>
+            <div class="cc-label">Program</div>
+            <div class="cc-val">Lun–Vin 08–18 · Urgențe 24/7</div>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Tip lucrare</label>
+    </div>
+    <form class="sr" onsubmit="handleForm(event)">
+      <div class="fg-row">
+        <div class="fg"><label>Nume *</label><input type="text" placeholder="Ioan Popescu" required></div>
+        <div class="fg"><label>Telefon *</label><input type="tel" placeholder="07xx xxx xxx" required></div>
+      </div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="email@exemplu.ro"></div>
+      <div class="fg">
+        <label>Tipul lucrării</label>
         <select>
+          <option value="">— Selectează —</option>
           <option>Instalație rezidențială</option>
           <option>Instalație comercială</option>
           <option>Instalație industrială</option>
           <option>Panouri fotovoltaice</option>
           <option>Tablou electric</option>
-          <option>Service / Urgență</option>
+          <option>Urgență / Service</option>
           <option>Altele</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Descriere lucrare</label>
-        <textarea placeholder="Descrie pe scurt ce ai nevoie..."></textarea>
-      </div>
-      <button type="submit" class="btn-submit">Trimite Mesaj →</button>
+      <div class="fg"><label>Descriere lucrare</label><textarea placeholder="Descrie pe scurt ce ai nevoie (suprafață, locație, detalii relevante)..."></textarea></div>
+      <button type="submit" class="submit-btn">Trimite mesajul →</button>
     </form>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Asia <span>Electric</span> Company</div>
-  <div class="footer-copy">© 2025 Asia Electric Company SRL · CUI 47369676 · Brașov</div>
-  <div class="footer-links">
+  <div class="logo">Asia <em>Electric</em></div>
+  <div class="foot-copy">© 2025 Asia Electric Company SRL · CUI 47369676 · Brașov</div>
+  <div class="foot-links">
     <a href="#services">Servicii</a>
+    <a href="#why">Despre</a>
     <a href="#contact">Contact</a>
   </div>
 </footer>
@@ -494,67 +732,82 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
-  // ── LOADER ────────────────────────────────────────
-  (function initLoader() {
-    const loader = document.getElementById('loader');
-    const letters = loader.querySelectorAll('.loader-logo span');
-    const loaderLine = loader.querySelector('.loader-line');
-    const loaderSub = loader.querySelector('.loader-sub');
+  // ── POWER-ON ANIMATION ──────────────────────────────────
+  window.addEventListener('load', () => {
+    const intro = document.getElementById('intro');
+    const line  = intro.querySelector('.intro-line');
     document.body.style.overflow = 'hidden';
 
     const tl = gsap.timeline({
-      onComplete: function () {
-        gsap.to(loader, {
-          yPercent: -100, duration: 0.9, ease: 'power3.inOut',
-          onComplete: function () {
-            loader.style.display = 'none';
-            document.body.style.overflow = '';
-            initHeroAnimation();
-          }
-        });
+      onComplete: () => {
+        document.body.style.overflow = '';
+        initScrollAnimations();
+        animateHero();
       }
     });
 
-    tl.to(letters, { opacity: 1, y: 0, duration: 0.06, stagger: 0.055, ease: 'power2.out' })
-      .to(loaderLine, { width: '220px', duration: 0.6, ease: 'power2.out' }, '-=0.2')
-      .to(loaderSub, { opacity: 1, duration: 0.4, ease: 'power2.out' }, '-=0.2')
-      .to({}, { duration: 0.7 });
-  })();
+    // 1. Linia apare si se extinde
+    tl.to(line, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' })
+    // 2. Linia se transforma in ecran alb (creste pe Y)
+    .to(line, { height: '100vh', duration: 0.5, ease: 'power3.in' })
+    // 3. Ecranul se retrage in sus
+    .to(intro, { yPercent: -100, duration: 0.7, ease: 'power3.inOut',
+        onComplete: () => { intro.style.display = 'none'; }
+    });
+  });
 
-  // ── HERO ANIMATION ────────────────────────────────
-  function initHeroAnimation() {
+  // ── HERO ENTRANCE ───────────────────────────────────────
+  function animateHero() {
     const tl = gsap.timeline();
-    tl.to('#hero-badge', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
-      .to('.hero-line-inner', { y: 0, duration: 0.9, stagger: 0.12, ease: 'power3.out' }, '-=0.2')
-      .to('#hero-sub', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4')
-      .to('#hero-actions', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.3')
-      .to('#hero-scroll', { opacity: 1, duration: 0.6 }, '-=0.2');
-    initScrollAnimations();
+    tl.from('.hero-tag',  { opacity:0, x:-20, duration:0.6 }, 0.1)
+      .from('h1',         { opacity:0, y:40,  duration:0.9, ease:'power3.out' }, 0.2)
+      .from('.hero-desc p',{ opacity:0, y:20, duration:0.6 }, 0.5)
+      .from('.hero-cta',  { opacity:0, y:20, duration:0.6 }, 0.65)
+      .from('.hero-scroll',{ opacity:0, duration:0.6 }, 0.9)
+      .from('nav',        { opacity:0, y:-20, duration:0.6 }, 0.1);
   }
 
-  // ── SCROLL REVEAL ─────────────────────────────────
+  // ── SCROLL REVEALS ──────────────────────────────────────
   function initScrollAnimations() {
-    document.querySelectorAll('.reveal').forEach(el => {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-      }, { threshold: 0.1 });
-      observer.observe(el);
+    document.querySelectorAll('.sr').forEach((el, i) => {
+      gsap.to(el, {
+        opacity: 1, y: 0, duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el, start: 'top 88%',
+          toggleActions: 'play none none none'
+        },
+        delay: (i % 3) * 0.08
+      });
+    });
+
+    // Counter animation
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const target = parseInt(el.dataset.count);
+      ScrollTrigger.create({
+        trigger: el, start: 'top 90%',
+        onEnter: () => {
+          gsap.to({ v: 0 }, {
+            v: target, duration: 1.5, ease: 'power2.out',
+            onUpdate: function() { el.textContent = Math.round(this.targets()[0].v) + '+'; }
+          });
+        }
+      });
     });
   }
 
-  // ── NAV SCROLL ────────────────────────────────────
-  const nav = document.getElementById('nav');
+  // ── NAV SCROLL ──────────────────────────────────────────
   window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
+    document.getElementById('nav').classList.toggle('stuck', window.scrollY > 80);
   });
 
-  // ── FORM ──────────────────────────────────────────
-  function handleSubmit(e) {
+  // ── FORM ────────────────────────────────────────────────
+  function handleForm(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.btn-submit');
+    const btn = e.target.querySelector('.submit-btn');
     btn.textContent = '✓ Mesaj trimis!';
-    btn.style.background = '#22c55e';
-    setTimeout(() => { btn.textContent = 'Trimite Mesaj →'; btn.style.background = ''; }, 3000);
+    btn.style.background = '#22c55e'; btn.style.color = '#fff';
+    setTimeout(() => { btn.textContent = 'Trimite mesajul →'; btn.style.background = ''; btn.style.color = ''; }, 3500);
   }
 </script>
 </body>
