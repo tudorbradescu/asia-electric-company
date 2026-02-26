@@ -3,812 +3,492 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asia Electric Company | Instalații Electrice Brașov</title>
-  <meta name="description" content="Instalații electrice profesionale în Brașov. Rezidențial, comercial, industrial. Autorizați ANRE. ☎ 0758 818 051">
+  <title>ASIA Electric Company | Instalații Electrice Brașov</title>
+  <meta name="description" content="ASIA Electric Company SRL — servicii profesionale de instalații electrice în Brașov. Instalații rezidențiale, comerciale, panouri fotovoltaice. Sună: 0758 818 051">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
   <style>
     :root {
-      --yellow: #f0b429;
-      --dark:   #0a0a0a;
-      --mid:    #141414;
-      --white:  #f5f5f0;
-      --muted:  #888;
-      --border: rgba(255,255,255,0.08);
+      --yellow: #f5c518;
+      --yellow-dim: rgba(245,197,24,0.10);
+      --yellow-glow: rgba(245,197,24,0.25);
+      --dark: #0a0a0c;
+      --dark2: #111114;
+      --dark3: #16161b;
+      --border: rgba(255,255,255,0.06);
+      --muted: #7a7a90;
+      --white: #f8f8f8;
+      --tr: 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--dark); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--dark); color:var(--white); font-family:'Inter',sans-serif; overflow-x:hidden; }
 
-    /* ─── POWER-ON INTRO ─────────────────────────────────
-       Un „volt" — linie orizontală care se extinde vertical
-       ca un vechi televizor care porneste, descoperind situl.
-    ──────────────────────────────────────────────────────── */
-    #intro {
-      position: fixed; inset: 0; z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--dark); pointer-events: none;
-    }
-    .intro-line {
-      width: 100vw; height: 2px;
-      background: linear-gradient(90deg, transparent 0%, var(--yellow) 20%, #fff 50%, var(--yellow) 80%, transparent 100%);
-      box-shadow: 0 0 20px var(--yellow), 0 0 60px rgba(240,180,41,0.4);
-      transform: scaleX(0);
-    }
+    /* LOADER */
+    #loader { position:fixed; inset:0; background:var(--dark); z-index:10000; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+    .loader-logo { font-family:'Outfit',sans-serif; font-size:clamp(2.2rem,6vw,4rem); font-weight:800; letter-spacing:-0.03em; display:flex; align-items:center; gap:0.4em; }
+    .loader-logo .l1 { color:#fff; }
+    .loader-logo .l2 { color:var(--yellow); }
+    .loader-logo span { opacity:0; transform:translateY(30px); display:inline-block; }
+    .loader-bar { width:0; height:2px; background:linear-gradient(90deg,var(--yellow),#fff); margin-top:1.5rem; border-radius:2px; }
+    .loader-tagline { opacity:0; margin-top:0.8rem; font-size:0.7rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted); }
 
-    /* ─── NAV ────────────────────────────────────────────── */
-    nav {
-      position: fixed; top:0; left:0; right:0; z-index:100;
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 1.8rem 6%;
-      transition: all 0.4s ease;
-    }
-    nav.stuck {
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(16px);
-      padding: 1rem 6%;
-      border-bottom: 1px solid var(--border);
-    }
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800; font-size: 1rem;
-      letter-spacing: 0.08em; text-transform: uppercase;
-    }
-    .logo em { color: var(--yellow); font-style: normal; }
-    .nav-r { display:flex; align-items:center; gap: 2.5rem; }
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:1.5rem 6%; transition:all var(--tr); }
+    nav.scrolled { background:rgba(10,10,12,0.96); backdrop-filter:blur(20px); padding:1rem 6%; border-bottom:1px solid var(--border); }
+    .nav-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:-0.02em; }
+    .nav-logo span { color:var(--yellow); }
     .nav-links { display:flex; gap:2rem; list-style:none; }
-    .nav-links a { color: rgba(255,255,255,0.55); text-decoration:none; font-size:0.82rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:500; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--white); }
-    .nav-tel { font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; color: var(--yellow); text-decoration:none; border: 1px solid var(--yellow); padding: 0.5rem 1.2rem; border-radius:3px; transition: all 0.3s; }
-    .nav-tel:hover { background: var(--yellow); color: var(--dark); }
-    @media(max-width:768px){ .nav-links{display:none;} }
+    .nav-links a { color:var(--muted); text-decoration:none; font-size:0.85rem; font-weight:500; transition:color var(--tr); }
+    .nav-links a:hover { color:var(--white); }
+    .nav-tel { background:var(--yellow); color:#000; padding:0.55rem 1.3rem; border-radius:50px; font-weight:700; font-size:0.83rem; text-decoration:none; transition:transform var(--tr),box-shadow var(--tr); }
+    .nav-tel:hover { transform:translateY(-2px); box-shadow:0 8px 25px var(--yellow-glow); }
+    @media(max-width:768px) { .nav-links,.nav-tel { display:none; } }
 
-    /* ─── HERO ───────────────────────────────────────────── */
-    #hero {
-      height: 100vh; min-height: 640px;
-      position: relative; display:flex; align-items:flex-end;
-      overflow: hidden;
-    }
-    .hero-img {
-      position: absolute; inset:0;
-      background: url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85') center/cover no-repeat;
-    }
-    .hero-img::after {
-      content:'';
-      position:absolute; inset:0;
-      background: linear-gradient(
-        to bottom,
-        rgba(10,10,10,0.3) 0%,
-        rgba(10,10,10,0.1) 30%,
-        rgba(10,10,10,0.6) 70%,
-        rgba(10,10,10,0.97) 100%
-      );
-    }
-    .hero-content {
-      position: relative; z-index:2;
-      padding: 0 6% 7rem; width:100%;
-      display:grid; grid-template-columns: 1fr auto;
-      align-items: flex-end; gap: 3rem;
-    }
-    @media(max-width:768px){ .hero-content{grid-template-columns:1fr;} }
-    .hero-tag {
-      display: inline-flex; align-items:center; gap:0.5rem;
-      font-size: 0.72rem; letter-spacing:0.2em; text-transform:uppercase;
-      color: var(--yellow); font-weight:600; margin-bottom: 1.5rem;
-    }
-    .hero-tag::before { content:''; width:30px; height:1px; background:var(--yellow); }
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 800; line-height: 0.95;
-      letter-spacing: -0.02em;
-    }
-    h1 .stroke {
-      -webkit-text-stroke: 1px rgba(255,255,255,0.5);
-      color: transparent;
-    }
-    .hero-desc {
-      max-width: 440px;
-      display:flex; flex-direction:column; align-items:flex-end; gap:1.5rem;
-      padding-bottom: 0.5rem;
-    }
-    .hero-desc p { color: rgba(255,255,255,0.6); font-size:0.95rem; line-height:1.7; text-align:right; }
-    .hero-cta { display:flex; gap:1rem; }
-    .btn { display:inline-block; text-decoration:none; font-weight:600; font-size:0.85rem; letter-spacing:0.06em; text-transform:uppercase; padding:0.85rem 2rem; border-radius:3px; transition: all 0.3s; }
-    .btn-fill { background:var(--yellow); color:var(--dark); }
-    .btn-fill:hover { background:#fff; transform:translateY(-2px); }
-    .btn-out { border:1px solid rgba(255,255,255,0.3); color:var(--white); }
-    .btn-out:hover { border-color:var(--white); }
-    .hero-scroll {
-      position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
-      z-index:3; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
-      color:rgba(255,255,255,0.3); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase;
-      animation: bob 2.5s ease-in-out infinite;
-    }
-    .hero-scroll svg { width:18px; opacity:0.5; }
-    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+    /* HERO */
+    #hero { min-height:100vh; position:relative; display:flex; align-items:center; overflow:hidden; }
+    .hero-img { position:absolute; inset:0; }
+    .hero-img img { width:100%; height:100%; object-fit:cover; object-position:center; }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(105deg, rgba(10,10,12,0.92) 0%, rgba(10,10,12,0.75) 50%, rgba(10,10,12,0.4) 100%); }
+    .hero-content { position:relative; padding:10rem 6% 6rem; max-width:780px; }
+    .hero-badge { display:inline-flex; align-items:center; gap:0.5rem; background:var(--yellow-dim); border:1px solid rgba(245,197,24,0.2); border-radius:50px; padding:0.35rem 1rem; font-size:0.75rem; color:var(--yellow); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:1.8rem; opacity:0; }
+    .hero-badge::before { content:''; width:6px; height:6px; background:var(--yellow); border-radius:50%; animation:blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.5)} }
+    .hero-title { font-family:'Outfit',sans-serif; font-size:clamp(3rem,7vw,6rem); font-weight:900; line-height:1.0; letter-spacing:-0.04em; margin-bottom:1.5rem; opacity:0; }
+    .hero-title .hl { color:var(--yellow); }
+    .hero-sub { font-size:clamp(1rem,2vw,1.15rem); color:rgba(248,248,248,0.7); line-height:1.75; max-width:500px; margin-bottom:2.5rem; opacity:0; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; opacity:0; }
+    .btn-primary { background:var(--yellow); color:#000; padding:0.9rem 2.2rem; border-radius:50px; font-weight:700; font-size:0.92rem; text-decoration:none; transition:transform var(--tr),box-shadow var(--tr); }
+    .btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 35px var(--yellow-glow); }
+    .btn-outline { background:transparent; color:var(--white); padding:0.9rem 2.2rem; border-radius:50px; font-weight:600; font-size:0.92rem; text-decoration:none; border:1px solid rgba(255,255,255,0.15); transition:all var(--tr); }
+    .btn-outline:hover { border-color:rgba(255,255,255,0.35); background:rgba(255,255,255,0.06); }
+    .hero-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; color:var(--muted); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; opacity:0; }
+    .scroll-anim { width:1px; height:48px; background:linear-gradient(to bottom,transparent,var(--muted)); overflow:hidden; position:relative; }
+    .scroll-anim::after { content:''; position:absolute; top:0; width:100%; height:20px; background:linear-gradient(to bottom,var(--yellow),transparent); animation:scrollDown 1.8s ease infinite; }
+    @keyframes scrollDown { 0%{top:-20px} 100%{top:60px} }
 
-    /* ─── TICKER BAND ────────────────────────────────────── */
-    .ticker {
-      background: var(--yellow); overflow:hidden; padding:0.75rem 0;
-      display:flex; white-space:nowrap;
-    }
-    .ticker-inner {
-      display:inline-flex; gap:0; animation: ticker 25s linear infinite;
-    }
-    .ticker-inner span {
-      font-family:'Syne',sans-serif; font-weight:700; font-size:0.8rem;
-      letter-spacing:0.1em; text-transform:uppercase; color:var(--dark);
-      padding: 0 2.5rem;
-    }
-    .ticker-inner span::after { content:'⚡'; margin-left:2.5rem; }
-    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    /* NUMBERS */
+    #numbers { padding:4rem 6%; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--dark2); }
+    .numbers-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; max-width:1100px; margin:0 auto; }
+    @media(max-width:700px) { .numbers-grid { grid-template-columns:repeat(2,1fr); } }
+    .num-item { text-align:center; }
+    .num-val { font-family:'Outfit',sans-serif; font-size:2.8rem; font-weight:800; color:var(--yellow); letter-spacing:-0.03em; line-height:1; }
+    .num-label { font-size:0.82rem; color:var(--muted); margin-top:0.4rem; }
 
-    /* ─── NUMBERS ─────────────────────────────────────────── */
-    #numbers {
-      display:grid; grid-template-columns: repeat(4,1fr);
-      border-bottom: 1px solid var(--border);
-    }
-    @media(max-width:700px){ #numbers{grid-template-columns:repeat(2,1fr);} }
-    .num-item {
-      padding: 3.5rem 6%;
-      border-right: 1px solid var(--border);
-    }
-    .num-item:last-child { border-right:none; }
-    .num-val {
-      font-family:'Syne',sans-serif; font-size:clamp(2.5rem,5vw,4rem);
-      font-weight:800; line-height:1; color:var(--yellow);
-      display:block; margin-bottom:0.6rem;
-    }
-    .num-label { font-size:0.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; }
+    /* SERVICES */
+    #services { padding:7rem 6%; }
+    .section-eyebrow { font-size:0.72rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--yellow); font-weight:600; margin-bottom:0.8rem; }
+    h2.section-title { font-family:'Outfit',sans-serif; font-size:clamp(2rem,4.5vw,3.4rem); font-weight:800; letter-spacing:-0.03em; line-height:1.1; margin-bottom:1rem; }
+    h2.section-title span { color:var(--yellow); }
+    .section-intro { max-width:1100px; margin:0 auto 4rem; display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:end; }
+    @media(max-width:800px) { .section-intro { grid-template-columns:1fr; gap:1.5rem; } }
+    .section-intro p { color:var(--muted); line-height:1.75; font-size:0.97rem; }
+    .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; max-width:1100px; margin:0 auto; }
+    @media(max-width:900px) { .services-grid { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:600px) { .services-grid { grid-template-columns:1fr; } }
+    .svc-card { background:var(--dark2); border:1px solid var(--border); border-radius:16px; overflow:hidden; transition:transform var(--tr),border-color var(--tr),box-shadow var(--tr); }
+    .svc-card:hover { transform:translateY(-6px); border-color:rgba(245,197,24,0.2); box-shadow:0 20px 50px rgba(0,0,0,0.4); }
+    .svc-card-img { height:200px; overflow:hidden; }
+    .svc-card-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; }
+    .svc-card:hover .svc-card-img img { transform:scale(1.06); }
+    .svc-card-body { padding:1.8rem; }
+    .svc-tag { display:inline-flex; align-items:center; gap:0.4rem; background:var(--yellow-dim); border:1px solid rgba(245,197,24,0.15); border-radius:50px; padding:0.25rem 0.75rem; font-size:0.72rem; color:var(--yellow); font-weight:600; letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1rem; }
+    .svc-card h3 { font-family:'Outfit',sans-serif; font-size:1.2rem; font-weight:700; margin-bottom:0.6rem; }
+    .svc-card p { color:var(--muted); font-size:0.88rem; line-height:1.65; }
+    .svc-card-link { display:inline-flex; align-items:center; gap:0.4rem; color:var(--yellow); font-size:0.82rem; font-weight:600; text-decoration:none; margin-top:1rem; transition:gap var(--tr); }
+    .svc-card-link:hover { gap:0.7rem; }
 
-    /* ─── SERVICES ────────────────────────────────────────── */
-    #services { padding: 8rem 6%; }
-    .sec-head {
-      display:flex; justify-content:space-between; align-items:flex-end;
-      margin-bottom: 4rem;
-    }
-    @media(max-width:768px){ .sec-head{flex-direction:column;align-items:flex-start;gap:1rem;} }
-    .sec-eyebrow {
-      font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase;
-      color:var(--yellow); font-weight:600; margin-bottom:1rem;
-      display:flex; align-items:center; gap:0.8rem;
-    }
-    .sec-eyebrow::before { content:''; width:24px; height:1px; background:var(--yellow); }
-    h2 {
-      font-family:'Syne',sans-serif;
-      font-size:clamp(2rem,4vw,3.2rem);
-      font-weight:800; line-height:1.1; letter-spacing:-0.02em;
-    }
-    h2 em { font-style:normal; color:var(--yellow); }
-    .sec-link {
-      color:rgba(255,255,255,0.4); text-decoration:none; font-size:0.82rem;
-      letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center;
-      gap:0.5rem; transition:color 0.3s; white-space:nowrap;
-    }
-    .sec-link:hover { color:var(--white); }
+    /* ABOUT / SPLITSCREEN */
+    #about { padding:7rem 6%; background:var(--dark2); }
+    .about-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    @media(max-width:900px) { .about-inner { grid-template-columns:1fr; gap:3rem; } }
+    .about-img-wrap { position:relative; }
+    .about-img-wrap img { width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:20px; }
+    .about-badge { position:absolute; bottom:-1.5rem; right:-1.5rem; background:var(--yellow); color:#000; padding:1.2rem 1.5rem; border-radius:16px; text-align:center; }
+    .about-badge-num { font-family:'Outfit',sans-serif; font-size:2rem; font-weight:900; line-height:1; }
+    .about-badge-txt { font-size:0.72rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; margin-top:0.2rem; }
+    .about-text { }
+    .about-text p { color:var(--muted); line-height:1.8; font-size:0.97rem; margin-top:1.5rem; margin-bottom:2rem; }
+    .check-list { list-style:none; display:flex; flex-direction:column; gap:0.8rem; margin-bottom:2.5rem; }
+    .check-list li { display:flex; align-items:center; gap:0.75rem; font-size:0.9rem; }
+    .check-list li::before { content:'✓'; width:22px; height:22px; background:var(--yellow-dim); border:1px solid rgba(245,197,24,0.25); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--yellow); font-size:0.65rem; font-weight:700; flex-shrink:0; }
 
-    /* BENTO GRID */
-    .bento {
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto auto;
-      gap: 2px;
-    }
-    @media(max-width:900px){ .bento{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:600px){ .bento{grid-template-columns:1fr;} }
+    /* WORK / GALLERY */
+    #work { padding:7rem 6%; }
+    .work-grid { max-width:1100px; margin:4rem auto 0; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:auto auto; gap:1.2rem; }
+    @media(max-width:700px) { .work-grid { grid-template-columns:1fr; } }
+    .work-item { border-radius:14px; overflow:hidden; position:relative; cursor:pointer; }
+    .work-item.tall { grid-row:span 2; }
+    .work-item img { width:100%; height:100%; object-fit:cover; min-height:220px; transition:transform 0.6s ease; display:block; }
+    .work-item.tall img { min-height:100%; }
+    .work-item:hover img { transform:scale(1.05); }
+    .work-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,10,12,0.85) 0%, transparent 60%); opacity:0; transition:opacity var(--tr); display:flex; align-items:flex-end; padding:1.5rem; }
+    .work-item:hover .work-overlay { opacity:1; }
+    .work-overlay-text { font-size:0.88rem; font-weight:600; }
 
-    .bento-card {
-      background: var(--mid);
-      padding: 2.5rem;
-      position:relative; overflow:hidden;
-      transition: background 0.4s;
-      cursor: default;
-    }
-    .bento-card:hover { background: #1a1a1a; }
-    .bento-card.featured {
-      grid-column: span 2;
-      background: var(--yellow);
-      color: var(--dark);
-    }
-    .bento-card.featured .bc-num { color: rgba(0,0,0,0.2); }
-    .bento-card.featured .bc-title { color: var(--dark); }
-    .bento-card.featured .bc-desc { color: rgba(0,0,0,0.65); }
-    @media(max-width:900px){ .bento-card.featured{grid-column:span 1;} }
+    /* PROCESS */
+    #process { padding:7rem 6%; background:var(--dark2); }
+    .process-grid { max-width:1100px; margin:4rem auto 0; display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; }
+    @media(max-width:900px) { .process-grid { grid-template-columns:repeat(2,1fr); } }
+    .process-item { text-align:center; }
+    .process-num { width:60px; height:60px; border:2px solid var(--yellow); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.5rem; font-family:'Outfit',sans-serif; font-weight:800; font-size:1.15rem; color:var(--yellow); position:relative; }
+    .process-num::after { content:''; position:absolute; top:50%; left:100%; width:calc(100% - 60px + 2rem); height:1px; background:linear-gradient(90deg,var(--yellow),transparent); transform:translateY(-50%); }
+    @media(max-width:900px) { .process-num::after { display:none; } }
+    .process-item:last-child .process-num::after { display:none; }
+    .process-item h3 { font-family:'Outfit',sans-serif; font-weight:700; margin-bottom:0.5rem; }
+    .process-item p { color:var(--muted); font-size:0.85rem; line-height:1.6; }
 
-    .bc-num {
-      font-family:'Syne',sans-serif; font-weight:800;
-      font-size:0.7rem; letter-spacing:0.15em; color:var(--muted);
-      margin-bottom:2rem;
-    }
-    .bc-icon { font-size:2rem; margin-bottom:1.2rem; display:block; }
-    .bc-title {
-      font-family:'Syne',sans-serif; font-weight:700;
-      font-size:1.1rem; margin-bottom:0.8rem;
-    }
-    .bc-desc { color:var(--muted); font-size:0.88rem; line-height:1.65; }
-    .bento-card.featured .bc-desc { color: rgba(0,0,0,0.65); }
-    .bc-arrow {
-      position:absolute; bottom:2.5rem; right:2.5rem;
-      width:36px; height:36px; border-radius:50%;
-      border:1px solid rgba(255,255,255,0.15);
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.9rem; transition:all 0.3s;
-    }
-    .bento-card:hover .bc-arrow { background:var(--yellow); border-color:var(--yellow); color:var(--dark); transform:rotate(45deg); }
-    .bento-card.featured .bc-arrow { border-color:rgba(0,0,0,0.2); color:var(--dark); }
-    .bento-card.featured:hover .bc-arrow { background:var(--dark); border-color:var(--dark); color:var(--yellow); }
+    /* CTA */
+    #cta { padding:7rem 6%; position:relative; overflow:hidden; }
+    .cta-inner { max-width:700px; margin:0 auto; text-align:center; position:relative; z-index:1; }
+    .cta-glow { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:600px; height:600px; background:radial-gradient(circle,var(--yellow-glow) 0%,transparent 70%); }
+    #cta h2 { font-family:'Outfit',sans-serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:900; letter-spacing:-0.03em; margin-bottom:1.2rem; }
+    #cta p { color:var(--muted); font-size:1rem; line-height:1.7; margin-bottom:2.5rem; }
+    .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
 
-    /* ─── PHOTO BREAK ─────────────────────────────────────── */
-    .photo-break {
-      height: 500px; position:relative; overflow:hidden;
-    }
-    .photo-break img {
-      width:100%; height:100%; object-fit:cover;
-      filter: brightness(0.6) saturate(0.8);
-      transform: scale(1.05);
-      transition: transform 8s ease;
-    }
-    .photo-break:hover img { transform: scale(1); }
-    .photo-break-overlay {
-      position:absolute; inset:0;
-      display:flex; align-items:center; padding:0 6%;
-      background: linear-gradient(90deg, rgba(10,10,10,0.7) 0%, transparent 60%);
-    }
-    .photo-break-text { max-width:550px; }
-    .photo-break-text h3 {
-      font-family:'Syne',sans-serif; font-size:clamp(1.8rem,4vw,3rem);
-      font-weight:800; line-height:1.1; margin-bottom:1.2rem;
-    }
-    .photo-break-text p { color:rgba(255,255,255,0.65); line-height:1.7; margin-bottom:2rem; }
-
-    /* ─── WHY ────────────────────────────────────────────── */
-    #why { padding: 8rem 6%; background: var(--mid); }
-    .why-grid {
-      display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start;
-    }
-    @media(max-width:900px){ .why-grid{grid-template-columns:1fr;gap:3rem;} }
-    .why-img {
-      position:relative; border-radius:4px; overflow:hidden; aspect-ratio:4/5;
-    }
-    .why-img img { width:100%; height:100%; object-fit:cover; display:block; }
-    .why-img::after {
-      content:''; position:absolute; inset:0;
-      background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%);
-    }
-    .why-badge {
-      position:absolute; bottom:2rem; left:2rem; right:2rem; z-index:2;
-      background:rgba(240,180,41,0.15);
-      border:1px solid rgba(240,180,41,0.3);
-      backdrop-filter:blur(10px);
-      border-radius:4px; padding:1.2rem;
-      display:flex; align-items:center; gap:1rem;
-    }
-    .why-badge-icon { font-size:1.5rem; }
-    .why-badge-text { font-size:0.82rem; }
-    .why-badge-text strong { display:block; color:var(--yellow); margin-bottom:0.2rem; font-family:'Syne',sans-serif; }
-    .why-badge-text span { color:rgba(255,255,255,0.6); font-size:0.78rem; }
-
-    .why-content { padding-top:1rem; }
-    .check-list { list-style:none; display:flex; flex-direction:column; gap:1px; margin-top:2.5rem; }
-    .check-item {
-      display:flex; gap:1.5rem; align-items:flex-start;
-      padding:1.5rem 0; border-bottom:1px solid var(--border);
-    }
-    .check-num {
-      font-family:'Syne',sans-serif; font-size:0.7rem;
-      font-weight:700; color:var(--yellow); letter-spacing:0.1em;
-      min-width:2rem; padding-top:0.2rem;
-    }
-    .check-item h4 { font-family:'Syne',sans-serif; font-weight:700; margin-bottom:0.4rem; }
-    .check-item p { color:var(--muted); font-size:0.88rem; line-height:1.6; }
-
-    /* ─── PROCESS ─────────────────────────────────────────── */
-    #process { padding:8rem 6%; }
-    .process-grid {
-      display:grid; grid-template-columns:repeat(4,1fr); gap:2px;
-      margin-top:4rem;
-    }
-    @media(max-width:900px){ .process-grid{grid-template-columns:repeat(2,1fr);} }
-    .proc-item {
-      padding:2.5rem 2rem;
-      border-left:1px solid var(--border);
-      position:relative;
-    }
-    .proc-item:first-child { border-left:none; }
-    .proc-n {
-      font-family:'Syne',sans-serif; font-size:3rem; font-weight:800;
-      color:rgba(240,180,41,0.15); line-height:1; margin-bottom:1.5rem;
-      display:block;
-    }
-    .proc-item h3 { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; margin-bottom:0.6rem; }
-    .proc-item p { color:var(--muted); font-size:0.85rem; line-height:1.6; }
-    .proc-dot {
-      width:8px; height:8px; background:var(--yellow); border-radius:50%;
-      position:absolute; top:2.5rem; left:-4.5px;
-    }
-    .proc-item:first-child .proc-dot { display:none; }
-
-    /* ─── CTA BAND ───────────────────────────────────────── */
-    #cta-band {
-      background: var(--yellow); padding:5rem 6%;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:2rem; flex-wrap:wrap;
-    }
-    #cta-band h2 { font-size:clamp(1.8rem,4vw,3rem); color:var(--dark); max-width:600px; }
-    .cta-tel {
-      font-family:'Syne',sans-serif; font-size:clamp(1.5rem,3vw,2.2rem);
-      font-weight:800; color:var(--dark); text-decoration:none;
-      border-bottom:3px solid rgba(0,0,0,0.3); padding-bottom:0.2rem;
-      white-space:nowrap;
-    }
-
-    /* ─── CONTACT ─────────────────────────────────────────── */
-    #contact { padding:8rem 6%; }
-    .contact-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:6rem; }
-    @media(max-width:900px){ .contact-grid{grid-template-columns:1fr;gap:3rem;} }
-    .contact-cards { display:flex; flex-direction:column; gap:2px; margin-top:2.5rem; }
-    .contact-card {
-      background:var(--mid); padding:1.5rem;
-      display:flex; gap:1.2rem; align-items:center;
-      border-radius:3px; transition:background 0.3s;
-    }
-    .contact-card:hover { background:#1c1c1c; }
-    .cc-icon {
-      width:44px; height:44px; background:rgba(240,180,41,0.12);
-      border:1px solid rgba(240,180,41,0.2);
-      border-radius:8px; display:flex; align-items:center; justify-content:center;
-      font-size:1.1rem; flex-shrink:0;
-    }
-    .cc-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.2rem; }
-    .cc-val { font-weight:600; font-size:0.95rem; }
-    .cc-val a { color:var(--white); text-decoration:none; transition:color 0.3s; }
-    .cc-val a:hover { color:var(--yellow); }
-
-    form { display:flex; flex-direction:column; gap:1rem; }
+    /* CONTACT */
+    #contact { padding:7rem 6%; background:var(--dark2); }
+    .contact-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:5rem; }
+    @media(max-width:900px) { .contact-inner { grid-template-columns:1fr; gap:3rem; } }
+    .contact-details p { color:var(--muted); line-height:1.75; margin-top:1rem; margin-bottom:2.5rem; font-size:0.97rem; }
+    .contact-list { list-style:none; display:flex; flex-direction:column; gap:1.2rem; }
+    .contact-list li { display:flex; gap:1rem; align-items:flex-start; }
+    .c-icon { width:44px; height:44px; background:var(--yellow-dim); border:1px solid rgba(245,197,24,0.15); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .c-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.15rem; }
+    .c-val { font-weight:600; font-size:0.95rem; }
+    .c-val a { color:var(--white); text-decoration:none; transition:color var(--tr); }
+    .c-val a:hover { color:var(--yellow); }
+    .contact-form { display:flex; flex-direction:column; gap:1rem; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:600px) { .form-row { grid-template-columns:1fr; } }
     .fg { display:flex; flex-direction:column; gap:0.4rem; }
-    .fg label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; }
-    .fg input, .fg textarea, .fg select {
-      background:#111; border:1px solid var(--border);
-      border-radius:3px; padding:0.9rem 1rem;
-      color:var(--white); font-family:'Inter',sans-serif; font-size:0.9rem;
-      outline:none; transition:border-color 0.3s;
-      -webkit-appearance:none;
-    }
-    .fg input:focus, .fg textarea:focus, .fg select:focus {
-      border-color:rgba(240,180,41,0.5);
-    }
-    .fg textarea { resize:vertical; min-height:130px; }
-    .fg-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    @media(max-width:600px){ .fg-row{grid-template-columns:1fr;} }
-    .submit-btn {
-      background:var(--yellow); color:var(--dark);
-      border:none; padding:1rem 2.5rem; border-radius:3px;
-      font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem;
-      letter-spacing:0.06em; text-transform:uppercase;
-      cursor:pointer; align-self:flex-start;
-      transition:all 0.3s;
-    }
-    .submit-btn:hover { background:#fff; transform:translateY(-2px); }
+    .fg label { font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+    .fg input, .fg textarea, .fg select { background:var(--dark3); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:'Inter',sans-serif; font-size:0.9rem; outline:none; transition:border-color var(--tr); }
+    .fg input:focus, .fg textarea:focus { border-color:rgba(245,197,24,0.35); }
+    .fg textarea { resize:vertical; min-height:110px; }
+    .btn-send { background:var(--yellow); color:#000; border:none; padding:0.95rem 2.2rem; border-radius:50px; font-weight:700; font-size:0.92rem; cursor:pointer; transition:transform var(--tr),box-shadow var(--tr); align-self:flex-start; }
+    .btn-send:hover { transform:translateY(-2px); box-shadow:0 10px 30px var(--yellow-glow); }
 
-    /* ─── FOOTER ──────────────────────────────────────────── */
-    footer {
-      border-top:1px solid var(--border);
-      padding:2rem 6%;
-      display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:1rem;
-    }
-    footer .logo { font-size:0.9rem; }
-    .foot-copy { color:var(--muted); font-size:0.78rem; }
-    .foot-links { display:flex; gap:2rem; }
-    .foot-links a { color:var(--muted); text-decoration:none; font-size:0.78rem; transition:color 0.3s; }
-    .foot-links a:hover { color:var(--white); }
+    /* FOOTER */
+    footer { border-top:1px solid var(--border); padding:2rem 6%; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+    .footer-logo { font-family:'Outfit',sans-serif; font-weight:800; font-size:1rem; }
+    .footer-logo span { color:var(--yellow); }
+    .footer-copy { color:var(--muted); font-size:0.8rem; }
+    .footer-links { display:flex; gap:1.5rem; }
+    .footer-links a { color:var(--muted); text-decoration:none; font-size:0.8rem; transition:color var(--tr); }
+    .footer-links a:hover { color:var(--white); }
 
-    /* ─── SCROLL REVEALS ──────────────────────────────────── */
-    .sr { opacity:0; transform:translateY(30px); }
+    /* REVEAL */
+    .fade-up { opacity:0; transform:translateY(40px); }
   </style>
 </head>
 <body>
 
-<!-- POWER-ON INTRO -->
-<div id="intro"><div class="intro-line"></div></div>
-
-<!-- NAV -->
-<nav id="nav">
-  <div class="logo">Asia <em>Electric</em></div>
-  <div class="nav-r">
-    <ul class="nav-links">
-      <li><a href="#services">Servicii</a></li>
-      <li><a href="#why">Despre</a></li>
-      <li><a href="#process">Proces</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <a href="tel:0758818051" class="nav-tel">☎ 0758 818 051</a>
+<div id="loader">
+  <div class="loader-logo">
+    <div><span class="l1" style="display:inline-block">A</span><span class="l1" style="display:inline-block">S</span><span class="l1" style="display:inline-block">I</span><span class="l1" style="display:inline-block">A</span></div>
+    &nbsp;
+    <div><span class="l2" style="display:inline-block">E</span><span class="l2" style="display:inline-block">l</span><span class="l2" style="display:inline-block">e</span><span class="l2" style="display:inline-block">c</span><span class="l2" style="display:inline-block">t</span><span class="l2" style="display:inline-block">r</span><span class="l2" style="display:inline-block">i</span><span class="l2" style="display:inline-block">c</span></div>
   </div>
+  <div class="loader-bar"></div>
+  <div class="loader-tagline">Brașov &nbsp;·&nbsp; România</div>
+</div>
+
+<nav id="nav">
+  <div class="nav-logo">ASIA <span>Electric</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Servicii</a></li>
+    <li><a href="#about">Despre Noi</a></li>
+    <li><a href="#work">Lucrări</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="tel:0758818051" class="nav-tel">☎ 0758 818 051</a>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
-  <div class="hero-img"></div>
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=1600&q=80&fit=crop" alt="Instalatii Electrice" loading="eager">
+  </div>
+  <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div>
-      <div class="hero-tag">Instalații Electrice · Brașov · Est. 2022</div>
-      <h1>Putere<br>în <span class="stroke">fiecare</span><br>proiect.</h1>
-    </div>
-    <div class="hero-desc">
-      <p>Executăm instalații electrice rezidențiale, comerciale și industriale în Brașov și județ. Autorizați ANRE, materiale premium, garanție 2 ani.</p>
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-fill">Ofertă gratuită</a>
-        <a href="#services" class="btn btn-out">Servicii</a>
-      </div>
+    <div class="hero-badge">⚡ Instalații Electrice Profesionale · Brașov</div>
+    <h1 class="hero-title">Expertiză<br>Electrică la<br><span class="hl">Cel Mai Înalt</span><br>Nivel</h1>
+    <p class="hero-sub">Instalații electrice rezidențiale, comerciale și industriale în Brașov și împrejurimi. Calitate certificată, termene respectate, garanție extinsă.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Solicită Ofertă Gratuită →</a>
+      <a href="tel:0758818051" class="btn-outline">☎ 0758 818 051</a>
     </div>
   </div>
   <div class="hero-scroll">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M12 5v14M5 12l7 7 7-7"/>
-    </svg>
-    <span>Scroll</span>
+    <div class="scroll-anim"></div>
+    <span>Derulează</span>
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner" id="ticker-inner">
-    <span>Instalații Rezidențiale</span>
-    <span>Tablouri Electrice</span>
-    <span>Panouri Fotovoltaice</span>
-    <span>Instalații Industriale</span>
-    <span>Service 24/7</span>
-    <span>Autorizat ANRE</span>
-    <span>Garanție 2 Ani</span>
-    <span>Brașov & Județ</span>
-    <span>Instalații Rezidențiale</span>
-    <span>Tablouri Electrice</span>
-    <span>Panouri Fotovoltaice</span>
-    <span>Instalații Industriale</span>
-    <span>Service 24/7</span>
-    <span>Autorizat ANRE</span>
-    <span>Garanție 2 Ani</span>
-    <span>Brașov & Județ</span>
+<section id="numbers">
+  <div class="numbers-grid">
+    <div class="num-item fade-up"><div class="num-val">150+</div><div class="num-label">Proiecte Finalizate</div></div>
+    <div class="num-item fade-up"><div class="num-val">8+</div><div class="num-label">Ani Experiență</div></div>
+    <div class="num-item fade-up"><div class="num-val">98%</div><div class="num-label">Clienți Mulțumiți</div></div>
+    <div class="num-item fade-up"><div class="num-val">24h</div><div class="num-label">Răspuns Urgențe</div></div>
   </div>
-</div>
+</section>
 
-<!-- NUMBERS -->
-<div id="numbers">
-  <div class="num-item sr">
-    <span class="num-val" data-count="150">0</span>
-    <span class="num-label">Proiecte finalizate</span>
-  </div>
-  <div class="num-item sr">
-    <span class="num-val" data-count="3">0</span>
-    <span class="num-label">Ani experiență</span>
-  </div>
-  <div class="num-item sr">
-    <span class="num-val">100%</span>
-    <span class="num-label">Clienți mulțumiți</span>
-  </div>
-  <div class="num-item sr">
-    <span class="num-val">24/7</span>
-    <span class="num-label">Suport urgențe</span>
-  </div>
-</div>
-
-<!-- SERVICES -->
 <section id="services">
-  <div class="sec-head">
+  <div class="section-intro">
     <div>
-      <div class="sec-eyebrow">Servicii</div>
-      <h2>Ce facem<br>pentru <em>tine</em></h2>
+      <div class="section-eyebrow fade-up">Ce facem</div>
+      <h2 class="section-title fade-up">Servicii <span>Complete</span><br>de Electricitate</h2>
     </div>
-    <a href="#contact" class="sec-link">Solicită ofertă →</a>
+    <p class="fade-up">De la instalații simple până la proiecte industriale complexe — echipa ASIA Electric acoperă toate nevoile tale electrice cu profesionalism și precizie.</p>
   </div>
-
-  <div class="bento">
-    <div class="bento-card featured sr">
-      <div class="bc-num">01</div>
-      <span class="bc-icon">🏠</span>
-      <div class="bc-title">Instalații Rezidențiale</div>
-      <div class="bc-desc">Prize, tablouri electrice, iluminat interior și exterior. Execuție îngrijită cu materiale certificate CE, pentru case, vile și apartamente din Brașov.</div>
-      <div class="bc-arrow">↗</div>
-    </div>
-    <div class="bento-card sr">
-      <div class="bc-num">02</div>
-      <span class="bc-icon">🏢</span>
-      <div class="bc-title">Instalații Comerciale</div>
-      <div class="bc-desc">Birouri, spații comerciale și restaurante. Sisteme eficiente energetic, dimensionate pentru nevoile tale de business.</div>
-      <div class="bc-arrow">↗</div>
-    </div>
-    <div class="bento-card sr">
-      <div class="bc-num">03</div>
-      <span class="bc-icon">🏭</span>
-      <div class="bc-title">Instalații Industriale</div>
-      <div class="bc-desc">Hale de producție, echipamente trifazate, sisteme de putere medie și joasă tensiune pentru industrie.</div>
-      <div class="bc-arrow">↗</div>
-    </div>
-    <div class="bento-card sr">
-      <div class="bc-num">04</div>
-      <span class="bc-icon">☀️</span>
-      <div class="bc-title">Panouri Fotovoltaice</div>
-      <div class="bc-desc">Sisteme On-Grid și Off-Grid cu montaj autorizat. Reducere factură curent cu până la 90%. ROI în 5-7 ani.</div>
-      <div class="bc-arrow">↗</div>
-    </div>
-    <div class="bento-card sr">
-      <div class="bc-num">05</div>
-      <span class="bc-icon">⚡</span>
-      <div class="bc-title">Tablouri Electrice</div>
-      <div class="bc-desc">Proiectare și montaj tablouri de distribuție cu echipamente Legrand, Schneider, ABB. Protecție completă.</div>
-      <div class="bc-arrow">↗</div>
-    </div>
-    <div class="bento-card sr">
-      <div class="bc-num">06</div>
-      <span class="bc-icon">🔧</span>
-      <div class="bc-title">Service & Urgențe</div>
-      <div class="bc-desc">Intervenție rapidă la avarii electrice, disponibili 24/7. Revizii periodice și mentenanță preventivă.</div>
-      <div class="bc-arrow">↗</div>
-    </div>
-  </div>
-</section>
-
-<!-- PHOTO BREAK -->
-<div class="photo-break">
-  <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80" alt="Echipa Asia Electric">
-  <div class="photo-break-overlay">
-    <div class="photo-break-text">
-      <h3>Echipă autorizată.<br>Calitate garantată.</h3>
-      <p>Fiecare electrician din echipa noastră deține atestare ANRE valabilă și experiență de minimum 3 ani. Lucrăm conform normativelor în vigoare și emitem toate documentele necesare.</p>
-      <a href="#contact" class="btn btn-fill">Contactează-ne</a>
-    </div>
-  </div>
-</div>
-
-<!-- WHY -->
-<section id="why">
-  <div class="why-grid">
-    <div class="why-img sr">
-      <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80" alt="Lucrare electrică profesională">
-      <div class="why-badge">
-        <div class="why-badge-icon">🏆</div>
-        <div class="why-badge-text">
-          <strong>Autorizat ANRE</strong>
-          <span>Toți tehnicienii certificați</span>
-        </div>
+  <div class="services-grid">
+    <div class="svc-card fade-up">
+      <div class="svc-card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop" alt="Instalatii Rezidentiale" loading="lazy"></div>
+      <div class="svc-card-body">
+        <div class="svc-tag">⚡ Rezidențial</div>
+        <h3>Instalații Rezidențiale</h3>
+        <p>Prize, tablouri electrice, iluminat interior și exterior pentru case și apartamente. Execuție îngrijită, fără surprize.</p>
+        <a href="#contact" class="svc-card-link">Solicită ofertă →</a>
       </div>
     </div>
-    <div class="why-content">
-      <div class="sec-eyebrow sr">De ce noi</div>
-      <h2 class="sr">Standardele<br>noastre <em>contează</em></h2>
-      <ul class="check-list">
-        <li class="check-item sr">
-          <div class="check-num">01</div>
-          <div>
-            <h4>Materiale Premium Certificate</h4>
-            <p>Folosim exclusiv produse Legrand, Schneider Electric și ABB — mărci cu garanție europeană. Niciun compromis la siguranța instalației tale.</p>
-          </div>
-        </li>
-        <li class="check-item sr">
-          <div class="check-num">02</div>
-          <div>
-            <h4>Prețuri Transparente, Fără Surprize</h4>
-            <p>Ofertă detaliată înainte de orice lucrare. Prețul din ofertă = prețul din factură. Niciodată costuri ascunse.</p>
-          </div>
-        </li>
-        <li class="check-item sr">
-          <div class="check-num">03</div>
-          <div>
-            <h4>Garanție 2 Ani pe Toate Lucrările</h4>
-            <p>Emitem certificat de garanție pentru fiecare lucrare. Orice problemă apărută în perioada de garanție — intervenim gratuit.</p>
-          </div>
-        </li>
-        <li class="check-item sr">
-          <div class="check-num">04</div>
-          <div>
-            <h4>Disponibili 24/7 pentru Urgențe</h4>
-            <p>Pene de curent, scurtcircuite sau avarii electrice nu au orar. Suntem disponibili oricând ai nevoie.</p>
-          </div>
-        </li>
-      </ul>
+    <div class="svc-card fade-up">
+      <div class="svc-card-img"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80&fit=crop" alt="Panouri Fotovoltaice" loading="lazy"></div>
+      <div class="svc-card-body">
+        <div class="svc-tag">☀️ Solar</div>
+        <h3>Panouri Fotovoltaice</h3>
+        <p>Sisteme On-Grid și Off-Grid pentru case și firme. Reducere factură electricitate până la 90%. ROI în 5-7 ani.</p>
+        <a href="#contact" class="svc-card-link">Solicită ofertă →</a>
+      </div>
+    </div>
+    <div class="svc-card fade-up">
+      <div class="svc-card-img"><img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80&fit=crop" alt="Instalatii Comerciale" loading="lazy"></div>
+      <div class="svc-card-body">
+        <div class="svc-tag">🏢 Comercial</div>
+        <h3>Instalații Comerciale</h3>
+        <p>Birouri, magazine, restaurante și spații comerciale. Sisteme eficiente energetic, conform normativelor în vigoare.</p>
+        <a href="#contact" class="svc-card-link">Solicită ofertă →</a>
+      </div>
+    </div>
+    <div class="svc-card fade-up">
+      <div class="svc-card-img"><img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&q=80&fit=crop" alt="Tablouri Electrice" loading="lazy"></div>
+      <div class="svc-card-body">
+        <div class="svc-tag">🔌 Tablouri</div>
+        <h3>Tablouri Electrice</h3>
+        <p>Proiectare și montaj tablouri de distribuție, automatizări și protecții. Siguranță maximă garantată.</p>
+        <a href="#contact" class="svc-card-link">Solicită ofertă →</a>
+      </div>
+    </div>
+    <div class="svc-card fade-up">
+      <div class="svc-card-img"><img src="https://images.unsplash.com/photo-1574359411659-15573a27fd0c?w=800&q=80&fit=crop" alt="Instalatii Industriale" loading="lazy"></div>
+      <div class="svc-card-body">
+        <div class="svc-tag">🏭 Industrial</div>
+        <h3>Instalații Industriale</h3>
+        <p>Hale de producție, depozite și echipamente trifazate. Joasă și medie tensiune. Proiecte la cheie.</p>
+        <a href="#contact" class="svc-card-link">Solicită ofertă →</a>
+      </div>
+    </div>
+    <div class="svc-card fade-up">
+      <div class="svc-card-img"><img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80&fit=crop" alt="Service si Mentenanta" loading="lazy"></div>
+      <div class="svc-card-body">
+        <div class="svc-tag">🔧 Service</div>
+        <h3>Service & Mentenanță 24/7</h3>
+        <p>Intervenții rapide la avarii, mentenanță preventivă și verificări periodice. Disponibili non-stop pentru urgențe.</p>
+        <a href="#contact" class="svc-card-link">Solicită ofertă →</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- PROCESS -->
-<section id="process">
-  <div class="sec-head sr">
-    <div>
-      <div class="sec-eyebrow">Cum lucrăm</div>
-      <h2>Simplu și<br><em>transparent</em></h2>
+<section id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap fade-up">
+      <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=900&q=80&fit=crop" alt="Echipa ASIA Electric">
+      <div class="about-badge">
+        <div class="about-badge-num">8+</div>
+        <div class="about-badge-txt">ani<br>experiență</div>
+      </div>
     </div>
+    <div class="about-text">
+      <div class="section-eyebrow fade-up">Cine suntem</div>
+      <h2 class="section-title fade-up">ASIA <span>Electric</span><br>Company SRL</h2>
+      <p class="fade-up">Suntem o echipă de electricieni autorizați din Brașov, cu o experiență de peste 8 ani în instalații electrice rezidențiale, comerciale și industriale. Executăm lucrări de calitate, cu materiale certificate, în termenele agreate.</p>
+      <ul class="check-list">
+        <li class="fade-up">Electricieni autorizați ANRE</li>
+        <li class="fade-up">Materiale certificate CE, calitate europeană</li>
+        <li class="fade-up">Garanție 2 ani pentru toate lucrările</li>
+        <li class="fade-up">Intervenții urgente 24h/7 în Brașov</li>
+        <li class="fade-up">Ofertă gratuită și transparentă</li>
+      </ul>
+      <a href="#contact" class="btn-primary fade-up">Contactează-ne acum →</a>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div class="section-eyebrow fade-up">Portofoliu</div>
+    <h2 class="section-title fade-up">Lucrări <span>Recente</span></h2>
+  </div>
+  <div class="work-grid" style="max-width:1100px;margin:4rem auto 0">
+    <div class="work-item tall fade-up">
+      <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=600&q=80&fit=crop" alt="Lucrare electrica 1" loading="lazy">
+      <div class="work-overlay"><div class="work-overlay-text">Instalație rezidențială · Brașov</div></div>
+    </div>
+    <div class="work-item fade-up">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop" alt="Lucrare electrica 2" loading="lazy" style="min-height:200px">
+      <div class="work-overlay"><div class="work-overlay-text">Panou solar · Brașov</div></div>
+    </div>
+    <div class="work-item fade-up">
+      <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=80&fit=crop" alt="Lucrare electrica 3" loading="lazy" style="min-height:200px">
+      <div class="work-overlay"><div class="work-overlay-text">Instalație comercială · Brașov</div></div>
+    </div>
+    <div class="work-item fade-up">
+      <img src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=600&q=80&fit=crop" alt="Lucrare electrica 4" loading="lazy" style="min-height:200px">
+      <div class="work-overlay"><div class="work-overlay-text">Tablou electric · Brașov</div></div>
+    </div>
+    <div class="work-item fade-up">
+      <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&q=80&fit=crop" alt="Lucrare electrica 5" loading="lazy" style="min-height:200px">
+      <div class="work-overlay"><div class="work-overlay-text">Instalație industrială · Brașov</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div class="section-eyebrow fade-up">Cum lucrăm</div>
+    <h2 class="section-title fade-up">Proces <span>Simplu</span> și Transparent</h2>
   </div>
   <div class="process-grid">
-    <div class="proc-item sr">
-      <span class="proc-n">01</span>
-      <div class="proc-dot"></div>
+    <div class="process-item fade-up">
+      <div class="process-num">01</div>
       <h3>Consultație</h3>
-      <p>Suni sau scrii. Răspundem în maximum 2 ore și stabilim o vizită gratuită la fața locului.</p>
+      <p>Te contactăm în max 2h. Stabilim o vizită gratuită la fața locului pentru evaluare.</p>
     </div>
-    <div class="proc-item sr">
-      <span class="proc-n">02</span>
-      <div class="proc-dot"></div>
-      <h3>Ofertă Gratuită</h3>
-      <p>Evaluăm lucrarea, măsurăm și îți trimitem o ofertă detaliată, fără nicio obligație.</p>
+    <div class="process-item fade-up">
+      <div class="process-num">02</div>
+      <h3>Ofertă Detaliată</h3>
+      <p>Evaluăm lucrarea și trimitem ofertă transparentă, fără costuri ascunse.</p>
     </div>
-    <div class="proc-item sr">
-      <span class="proc-n">03</span>
-      <div class="proc-dot"></div>
+    <div class="process-item fade-up">
+      <div class="process-num">03</div>
       <h3>Execuție</h3>
-      <p>Lucrăm îngrijit, respectăm termenele promise și curățăm locul de muncă după finalizare.</p>
+      <p>Lucrăm îngrijit, cu materiale certificate, respectând termenele agreate.</p>
     </div>
-    <div class="proc-item sr">
-      <span class="proc-n">04</span>
-      <div class="proc-dot"></div>
-      <h3>Recepție & Garanție</h3>
-      <p>Testăm instalația, emitem toate documentele și predăm cu certificat de garanție 2 ani.</p>
+    <div class="process-item fade-up">
+      <div class="process-num">04</div>
+      <h3>Garanție 2 Ani</h3>
+      <p>Testăm, emitem documentație și oferim garanție completă 2 ani.</p>
     </div>
   </div>
 </section>
 
-<!-- CTA BAND -->
-<div id="cta-band">
-  <h2>Ai un proiect? <br>Hai să vorbim astăzi.</h2>
-  <a href="tel:0758818051" class="cta-tel">0758 818 051</a>
-</div>
-
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-grid">
-    <div>
-      <div class="sec-eyebrow sr">Contact</div>
-      <h2 class="sr">Trimite-ne<br>un <em>mesaj</em></h2>
-      <div class="contact-cards">
-        <div class="contact-card sr">
-          <div class="cc-icon">📞</div>
-          <div>
-            <div class="cc-label">Telefon</div>
-            <div class="cc-val"><a href="tel:0758818051">0758 818 051</a></div>
-          </div>
-        </div>
-        <div class="contact-card sr">
-          <div class="cc-icon">✉️</div>
-          <div>
-            <div class="cc-label">Email</div>
-            <div class="cc-val"><a href="mailto:asiaelectricbrasov@gmail.com">asiaelectricbrasov@gmail.com</a></div>
-          </div>
-        </div>
-        <div class="contact-card sr">
-          <div class="cc-icon">📍</div>
-          <div>
-            <div class="cc-label">Adresă</div>
-            <div class="cc-val">Str. Camil Petrescu 5A, Brașov</div>
-          </div>
-        </div>
-        <div class="contact-card sr">
-          <div class="cc-icon">🕐</div>
-          <div>
-            <div class="cc-label">Program</div>
-            <div class="cc-val">Lun–Vin 08–18 · Urgențe 24/7</div>
-          </div>
-        </div>
-      </div>
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="section-eyebrow fade-up">Hai să Lucrăm</div>
+    <h2 class="fade-up">Solicită o<br><span style="color:var(--yellow)">Ofertă Gratuită</span></h2>
+    <p class="fade-up">Contactează-ne astăzi și îți răspundem în mai puțin de 2 ore. Vizită de evaluare gratuită, ofertă detaliată, fără obligații.</p>
+    <div class="cta-btns fade-up">
+      <a href="#contact" class="btn-primary">Trimite o cerere →</a>
+      <a href="tel:0758818051" class="btn-outline">☎ Sună acum</a>
     </div>
-    <form class="sr" onsubmit="handleForm(event)">
-      <div class="fg-row">
-        <div class="fg"><label>Nume *</label><input type="text" placeholder="Ioan Popescu" required></div>
-        <div class="fg"><label>Telefon *</label><input type="tel" placeholder="07xx xxx xxx" required></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-details">
+      <div class="section-eyebrow fade-up">Contact</div>
+      <h2 class="section-title fade-up">Hai să<br><span>Discutăm</span></h2>
+      <p class="fade-up">Suntem disponibili Luni–Vineri 08:00–18:00 și pentru urgențe non-stop. Răspundem în maximum 2 ore.</p>
+      <ul class="contact-list">
+        <li class="fade-up"><div class="c-icon">📞</div><div><div class="c-label">Telefon</div><div class="c-val"><a href="tel:0758818051">0758 818 051</a></div></div></li>
+        <li class="fade-up"><div class="c-icon">✉️</div><div><div class="c-label">Email</div><div class="c-val"><a href="mailto:asiaelectricbrasov@gmail.com">asiaelectricbrasov@gmail.com</a></div></div></li>
+        <li class="fade-up"><div class="c-icon">📍</div><div><div class="c-label">Sediu social</div><div class="c-val">Str. Camil Petrescu 5A, Bl. Avatar, Brașov</div></div></li>
+        <li class="fade-up"><div class="c-icon">🕐</div><div><div class="c-label">Program</div><div class="c-val">Lun–Vin: 08:00–18:00 · Urgențe 24/7</div></div></li>
+      </ul>
+    </div>
+    <form class="contact-form fade-up" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="fg"><label>Nume</label><input type="text" placeholder="Popescu Ion" required></div>
+        <div class="fg"><label>Telefon</label><input type="tel" placeholder="07xx xxx xxx" required></div>
       </div>
-      <div class="fg"><label>Email</label><input type="email" placeholder="email@exemplu.ro"></div>
-      <div class="fg">
-        <label>Tipul lucrării</label>
+      <div class="fg"><label>Tip lucrare</label>
         <select>
-          <option value="">— Selectează —</option>
           <option>Instalație rezidențială</option>
           <option>Instalație comercială</option>
           <option>Instalație industrială</option>
           <option>Panouri fotovoltaice</option>
           <option>Tablou electric</option>
-          <option>Urgență / Service</option>
-          <option>Altele</option>
+          <option>Service / urgență</option>
+          <option>Alt tip</option>
         </select>
       </div>
-      <div class="fg"><label>Descriere lucrare</label><textarea placeholder="Descrie pe scurt ce ai nevoie (suprafață, locație, detalii relevante)..."></textarea></div>
-      <button type="submit" class="submit-btn">Trimite mesajul →</button>
+      <div class="fg"><label>Descriere</label><textarea placeholder="Descrie pe scurt ce ai nevoie..."></textarea></div>
+      <button type="submit" class="btn-send">Trimite Mesaj ⚡</button>
     </form>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div class="logo">Asia <em>Electric</em></div>
-  <div class="foot-copy">© 2025 Asia Electric Company SRL · CUI 47369676 · Brașov</div>
-  <div class="foot-links">
-    <a href="#services">Servicii</a>
-    <a href="#why">Despre</a>
-    <a href="#contact">Contact</a>
-  </div>
+  <div class="footer-logo">ASIA <span>Electric</span></div>
+  <div class="footer-copy">© 2025 ASIA Electric Company SRL · Brașov, România</div>
+  <div class="footer-links"><a href="#services">Servicii</a><a href="#about">Despre</a><a href="#contact">Contact</a></div>
 </footer>
 
 <script>
-  gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-  // ── POWER-ON ANIMATION ──────────────────────────────────
-  window.addEventListener('load', () => {
-    const intro = document.getElementById('intro');
-    const line  = intro.querySelector('.intro-line');
-    document.body.style.overflow = 'hidden';
+// LOADER
+(function() {
+  const loader = document.getElementById('loader');
+  const letters = loader.querySelectorAll('span');
+  const bar = loader.querySelector('.loader-bar');
+  const tagline = loader.querySelector('.loader-tagline');
+  document.body.style.overflow = 'hidden';
+  const tl = gsap.timeline({ onComplete: () => {
+    gsap.to(loader, { yPercent: -100, duration: 0.9, ease: 'power3.inOut', onComplete: () => {
+      loader.style.display = 'none';
+      document.body.style.overflow = '';
+      initPage();
+    }});
+  }});
+  tl.to(letters, { opacity:1, y:0, duration:0.05, stagger:0.045, ease:'power2.out' })
+    .to(bar, { width:'240px', duration:0.7, ease:'power2.out' }, '-=0.1')
+    .to(tagline, { opacity:1, duration:0.4 }, '-=0.3')
+    .to({}, { duration:0.6 });
+})();
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        document.body.style.overflow = '';
-        initScrollAnimations();
-        animateHero();
-      }
-    });
+function initPage() {
+  // Hero animations
+  gsap.to('.hero-badge', { opacity:1, y:0, duration:0.7, ease:'power2.out' });
+  gsap.to('.hero-title', { opacity:1, y:0, duration:0.9, delay:0.15, ease:'power3.out' });
+  gsap.to('.hero-sub', { opacity:1, y:0, duration:0.7, delay:0.3, ease:'power2.out' });
+  gsap.to('.hero-btns', { opacity:1, y:0, duration:0.7, delay:0.45, ease:'power2.out' });
+  gsap.to('.hero-scroll', { opacity:1, duration:0.7, delay:0.8 });
 
-    // 1. Linia apare si se extinde
-    tl.to(line, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' })
-    // 2. Linia se transforma in ecran alb (creste pe Y)
-    .to(line, { height: '100vh', duration: 0.5, ease: 'power3.in' })
-    // 3. Ecranul se retrage in sus
-    .to(intro, { yPercent: -100, duration: 0.7, ease: 'power3.inOut',
-        onComplete: () => { intro.style.display = 'none'; }
+  // Scroll reveals
+  document.querySelectorAll('.fade-up').forEach(el => {
+    gsap.to(el, {
+      opacity:1, y:0, duration:0.7, ease:'power2.out',
+      scrollTrigger: { trigger:el, start:'top 88%', once:true }
     });
   });
+}
 
-  // ── HERO ENTRANCE ───────────────────────────────────────
-  function animateHero() {
-    const tl = gsap.timeline();
-    tl.from('.hero-tag',  { opacity:0, x:-20, duration:0.6 }, 0.1)
-      .from('h1',         { opacity:0, y:40,  duration:0.9, ease:'power3.out' }, 0.2)
-      .from('.hero-desc p',{ opacity:0, y:20, duration:0.6 }, 0.5)
-      .from('.hero-cta',  { opacity:0, y:20, duration:0.6 }, 0.65)
-      .from('.hero-scroll',{ opacity:0, duration:0.6 }, 0.9)
-      .from('nav',        { opacity:0, y:-20, duration:0.6 }, 0.1);
-  }
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
 
-  // ── SCROLL REVEALS ──────────────────────────────────────
-  function initScrollAnimations() {
-    document.querySelectorAll('.sr').forEach((el, i) => {
-      gsap.to(el, {
-        opacity: 1, y: 0, duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: el, start: 'top 88%',
-          toggleActions: 'play none none none'
-        },
-        delay: (i % 3) * 0.08
-      });
-    });
-
-    // Counter animation
-    document.querySelectorAll('[data-count]').forEach(el => {
-      const target = parseInt(el.dataset.count);
-      ScrollTrigger.create({
-        trigger: el, start: 'top 90%',
-        onEnter: () => {
-          gsap.to({ v: 0 }, {
-            v: target, duration: 1.5, ease: 'power2.out',
-            onUpdate: function() { el.textContent = Math.round(this.targets()[0].v) + '+'; }
-          });
-        }
-      });
-    });
-  }
-
-  // ── NAV SCROLL ──────────────────────────────────────────
-  window.addEventListener('scroll', () => {
-    document.getElementById('nav').classList.toggle('stuck', window.scrollY > 80);
-  });
-
-  // ── FORM ────────────────────────────────────────────────
-  function handleForm(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.submit-btn');
-    btn.textContent = '✓ Mesaj trimis!';
-    btn.style.background = '#22c55e'; btn.style.color = '#fff';
-    setTimeout(() => { btn.textContent = 'Trimite mesajul →'; btn.style.background = ''; btn.style.color = ''; }, 3500);
-  }
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-send');
+  btn.textContent = '✓ Mesaj trimis!'; btn.style.background = '#22c55e'; btn.style.color = '#fff';
+  setTimeout(() => { btn.textContent = 'Trimite Mesaj ⚡'; btn.style.background = ''; btn.style.color = ''; }, 3500);
+}
 </script>
 </body>
 </html>
