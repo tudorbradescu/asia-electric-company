@@ -7,8 +7,8 @@
   <meta name="description" content="Instalații electrice profesionale în Brașov. Rezidențial, comercial, industrial. Autorizați ANRE. ☎ 0758 818 051">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" onerror="window._gsapFailed=true"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" onerror="window._gsapFailed=true"></script>
 
   <style>
     :root {
@@ -758,16 +758,36 @@
 </footer>
 
 <script>
-  gsap.registerPlugin(ScrollTrigger);
+  // ── FALLBACK: skip intro if GSAP fails or hangs ──────────
+  function skipIntro() {
+    const intro = document.getElementById('intro');
+    if (intro) intro.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  // Safety net: if page takes more than 4s, force-show content
+  const _introTimeout = setTimeout(skipIntro, 4000);
+
+  if (typeof gsap !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+  }
 
   // ── POWER-ON ANIMATION ──────────────────────────────────
   window.addEventListener('load', () => {
     const intro = document.getElementById('intro');
     const line  = intro.querySelector('.intro-line');
+
+    // If GSAP didn't load, skip animation entirely
+    if (typeof gsap === 'undefined' || window._gsapFailed) {
+      clearTimeout(_introTimeout);
+      skipIntro();
+      return;
+    }
+
     document.body.style.overflow = 'hidden';
 
     const tl = gsap.timeline({
       onComplete: () => {
+        clearTimeout(_introTimeout);
         document.body.style.overflow = '';
         initScrollAnimations();
         animateHero();
